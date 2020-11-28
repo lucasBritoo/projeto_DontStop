@@ -286,6 +286,13 @@ public class CadastroCondominio extends JFrame {
 		btnSalvar.setFont(new Font("Arial", Font.PLAIN, 14));
 		
 		btnVoltar = new JButton("VOLTAR");
+		btnVoltar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				TelaInicial telaInicial = new TelaInicial();
+				telaInicial.setVisible(true);
+				dispose();
+			}
+		});
 		btnVoltar.setIcon(new ImageIcon(CadastroCondominio.class.getResource("/com/projeto/estrutura/imagens/arrow_undo.png")));
 		btnVoltar.setFont(new Font("Arial", Font.PLAIN, 14));
 			

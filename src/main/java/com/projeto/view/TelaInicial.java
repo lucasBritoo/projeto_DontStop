@@ -103,11 +103,21 @@ public class TelaInicial extends JFrame {
 		JLabel lblNewLabel_6 = new JLabel("DESENVOLVIDO POR LUCAS BRITO");
 		lblNewLabel_6.setFont(new Font("Arial Black", Font.BOLD, 11));
 		
-		lblInvalido = new JLabel("Credenciais inv\u00E1lidas. Verifique e tente novamente");
+		lblInvalido = new JLabel("    ");
 		lblInvalido.setForeground(Color.RED);
 		lblInvalido.setFont(new Font("Arial", Font.PLAIN, 12));
 		
 		passwordSenha = new JPasswordField();
+		
+		JButton btnNovoCadastro = new JButton("NOVO CADASTRO");
+		btnNovoCadastro.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				novoCadastro();
+			}
+
+		});
+		btnNovoCadastro.setIcon(new ImageIcon(TelaInicial.class.getResource("/com/projeto/estrutura/imagens/application_add.png")));
+		btnNovoCadastro.setFont(new Font("Arial", Font.PLAIN, 16));
 		GroupLayout gl_contentPane = new GroupLayout(contentPane);
 		gl_contentPane.setHorizontalGroup(
 			gl_contentPane.createParallelGroup(Alignment.TRAILING)
@@ -119,30 +129,31 @@ public class TelaInicial extends JFrame {
 						.addGroup(gl_contentPane.createSequentialGroup()
 							.addGap(20)
 							.addComponent(lblNewLabel)
-							.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
-								.addGroup(gl_contentPane.createSequentialGroup()
-									.addGap(28)
-									.addComponent(lblInvalido, GroupLayout.DEFAULT_SIZE, 296, Short.MAX_VALUE))
-								.addGroup(gl_contentPane.createSequentialGroup()
-									.addGap(18)
-									.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
-										.addComponent(passwordSenha, GroupLayout.DEFAULT_SIZE, 306, Short.MAX_VALUE)
-										.addComponent(lblNewLabel_3, GroupLayout.PREFERRED_SIZE, 126, GroupLayout.PREFERRED_SIZE)
-										.addComponent(txtEmail, GroupLayout.DEFAULT_SIZE, 306, Short.MAX_VALUE)
-										.addComponent(lblNewLabel_4, GroupLayout.PREFERRED_SIZE, 122, GroupLayout.PREFERRED_SIZE)
-										.addComponent(lblEsqueceuSenha, Alignment.TRAILING, GroupLayout.PREFERRED_SIZE, 193, GroupLayout.PREFERRED_SIZE))))
-							.addPreferredGap(ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+							.addGap(4)
+							.addGroup(gl_contentPane.createParallelGroup(Alignment.TRAILING)
+								.addGroup(gl_contentPane.createParallelGroup(Alignment.TRAILING, false)
+									.addGroup(gl_contentPane.createSequentialGroup()
+										.addGap(4)
+										.addComponent(btnAcessar)
+										.addPreferredGap(ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+										.addComponent(btnNovoCadastro))
+									.addGroup(gl_contentPane.createSequentialGroup()
+										.addGap(37)
+										.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+											.addComponent(lblNewLabel_3, GroupLayout.PREFERRED_SIZE, 126, GroupLayout.PREFERRED_SIZE)
+											.addComponent(txtEmail, GroupLayout.PREFERRED_SIZE, 304, GroupLayout.PREFERRED_SIZE)
+											.addComponent(lblNewLabel_4, GroupLayout.PREFERRED_SIZE, 122, GroupLayout.PREFERRED_SIZE)
+											.addGroup(gl_contentPane.createParallelGroup(Alignment.TRAILING)
+												.addComponent(lblEsqueceuSenha, GroupLayout.PREFERRED_SIZE, 215, GroupLayout.PREFERRED_SIZE)
+												.addComponent(passwordSenha, GroupLayout.PREFERRED_SIZE, 304, GroupLayout.PREFERRED_SIZE)))))
+								.addComponent(lblInvalido, GroupLayout.PREFERRED_SIZE, 296, GroupLayout.PREFERRED_SIZE)))
 						.addGroup(gl_contentPane.createSequentialGroup()
 							.addGap(235)
 							.addComponent(lblNewLabel_2, GroupLayout.PREFERRED_SIZE, 420, GroupLayout.PREFERRED_SIZE))
 						.addGroup(gl_contentPane.createSequentialGroup()
 							.addGap(259)
 							.addComponent(lblNewLabel_6, GroupLayout.PREFERRED_SIZE, 241, GroupLayout.PREFERRED_SIZE)))
-					.addContainerGap(34, GroupLayout.PREFERRED_SIZE))
-				.addGroup(gl_contentPane.createSequentialGroup()
-					.addContainerGap(520, Short.MAX_VALUE)
-					.addComponent(btnAcessar)
-					.addGap(129))
+					.addGap(130))
 		);
 		gl_contentPane.setVerticalGroup(
 			gl_contentPane.createParallelGroup(Alignment.LEADING)
@@ -151,31 +162,31 @@ public class TelaInicial extends JFrame {
 					.addComponent(lblNewLabel_1, GroupLayout.PREFERRED_SIZE, 138, GroupLayout.PREFERRED_SIZE)
 					.addPreferredGap(ComponentPlacement.UNRELATED)
 					.addComponent(lblNewLabel_2, GroupLayout.PREFERRED_SIZE, 17, GroupLayout.PREFERRED_SIZE)
-					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING, false)
+					.addGap(28)
+					.addGroup(gl_contentPane.createParallelGroup(Alignment.TRAILING)
 						.addGroup(gl_contentPane.createSequentialGroup()
-							.addGap(28)
-							.addComponent(lblNewLabel))
-						.addGroup(gl_contentPane.createSequentialGroup()
-							.addGap(45)
 							.addComponent(lblNewLabel_3)
-							.addPreferredGap(ComponentPlacement.UNRELATED)
+							.addPreferredGap(ComponentPlacement.RELATED)
 							.addComponent(txtEmail, GroupLayout.PREFERRED_SIZE, 29, GroupLayout.PREFERRED_SIZE)
-							.addGap(23)
+							.addPreferredGap(ComponentPlacement.UNRELATED)
 							.addComponent(lblNewLabel_4)
 							.addPreferredGap(ComponentPlacement.RELATED)
 							.addComponent(passwordSenha, GroupLayout.PREFERRED_SIZE, 31, GroupLayout.PREFERRED_SIZE)
-							.addGap(12)
+							.addPreferredGap(ComponentPlacement.RELATED)
 							.addComponent(lblEsqueceuSenha)
-							.addPreferredGap(ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-							.addComponent(lblInvalido)))
-					.addGap(9)
-					.addComponent(btnAcessar)
-					.addGap(56)
+							.addGap(26)
+							.addComponent(lblInvalido)
+							.addPreferredGap(ComponentPlacement.UNRELATED)
+							.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
+								.addComponent(btnAcessar)
+								.addComponent(btnNovoCadastro, GroupLayout.PREFERRED_SIZE, 27, GroupLayout.PREFERRED_SIZE)))
+						.addComponent(lblNewLabel))
+					.addGap(92)
 					.addComponent(lblNewLabel_6)
 					.addContainerGap(18, Short.MAX_VALUE))
 		);
 		contentPane.setLayout(gl_contentPane);
-		lblInvalido.setVisible(false);
+		
 	}
 	
 	
@@ -184,7 +195,6 @@ public class TelaInicial extends JFrame {
 		if(txtEmail.getText().equals("") || passwordSenha.getPassword().length == 0) {
 			credenciaisInvalidas();
 		}
-		
 		
 		else {
 			
@@ -199,7 +209,10 @@ public class TelaInicial extends JFrame {
 			else {
 				for(Condominio condominio: listaCondominio) {
 					if(condominio.getEmail().equals(txtEmail.getText()) && condominio.getSenha().equals(new String(passwordSenha.getPassword()))) {
-						JOptionPane.showMessageDialog(null, "Entrou parça");
+						TelaCondominio telaCondominio = new TelaCondominio();
+						telaCondominio.setVisible(true);
+						dispose();
+						
 					}
 					else {
 						credenciaisInvalidas();
@@ -209,14 +222,22 @@ public class TelaInicial extends JFrame {
 			}
 		}
 	}
+	
 	private void esqueceuSenha() {
-		JOptionPane.showMessageDialog(null, "Entrou parça");
+		TelaEsqueceuSenha telaEsqueceuSenha = new TelaEsqueceuSenha();
+		telaEsqueceuSenha.setVisible(true);
+		dispose();
 	}
 	
-
+	private void novoCadastro() {
+		CadastroCondominio cadastroCondominio = new CadastroCondominio();
+		cadastroCondominio.setVisible(true);
+		dispose();
+	}
+	
 	private void credenciaisInvalidas() {
 		txtEmail.setText("");
 		passwordSenha.setText("");
-		lblInvalido.setVisible(true);
+		lblInvalido.setText("Credenciais inv\u00E1lidas. Verifique e tente novamente");
 	}
 }
