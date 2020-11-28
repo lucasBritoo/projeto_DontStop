@@ -10,7 +10,7 @@ import com.projeto.model.service.CondominioService;
 
 public class CondominioTeste {
 	
-		@Test(expected = Exception.class)
+		//@Test(expected = Exception.class)
 		public void salvarCondominioBancoDadosTeste() {
 			Condominio condominio = new Condominio();
 			
@@ -53,10 +53,23 @@ public class CondominioTeste {
 			System.out.println("Alteração do usuario no banco de dados");
 		}
 		
+		
 		//@Test(expected= Exception.class)
 		public void listarTodosCondominiosTabelaCondominio() {
 			CondominioService condominioService = new CondominioService();
 			List<Condominio> listaCondominio = condominioService.findAll();
+			
+			for(Condominio condominio: listaCondominio) {
+				System.out.println(condominio.toString());
+			}
+		}
+		
+		@Test(expected= Exception.class)
+		public void buscaEmail() {
+			CondominioService condominioService = new CondominioService();
+			
+			List<Condominio> listaCondominio = condominioService.findEmail("cadastro@gmail.com");
+			
 			
 			for(Condominio condominio: listaCondominio) {
 				System.out.println(condominio.toString());
@@ -72,4 +85,5 @@ public class CondominioTeste {
 			
 			condominioService.delete(condominio);
 		}
+		
 }

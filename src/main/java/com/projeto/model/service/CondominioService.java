@@ -70,6 +70,7 @@ public class CondominioService extends ConexaoBancoService{
 		return toReturn;
 	}
 	
+	
 	public Integer delete(Condominio condominio) {
 		Integer toReturn =0;
 		
@@ -92,9 +93,15 @@ public class CondominioService extends ConexaoBancoService{
 		return toReturn;
 	}
 	
+	
 	public Condominio findById(Integer id) {
 		return this.getCondominioDao().findById(id);
 	}
+	
+	public List<Condominio> findEmail(String email) {
+		return this.getCondominioDao().findEmail(Condominio.class, email);
+	}
+	
 	
 	public List<Condominio> findAll(){
 		return this.getCondominioDao().findAll(Condominio.class);

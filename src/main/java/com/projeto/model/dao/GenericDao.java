@@ -5,6 +5,7 @@ import java.io.Serializable;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
+
 import java.lang.reflect.ParameterizedType;
 import java.util.ArrayList;
 import java.util.List;
@@ -36,6 +37,7 @@ public abstract class GenericDao<T, ID extends Serializable>{
 		 return this.getEntityManager().find(getClassePersistencia(), id);
 	 }
 	 
+	 
 	 @SuppressWarnings("unchecked")
 	 public List<T> findAll(Class<T> classe){
 		 List<T> lista = new ArrayList<>();
@@ -47,6 +49,17 @@ public abstract class GenericDao<T, ID extends Serializable>{
 		 
 	 }
 	 
+	 public List<T> findEmail(Class<T> classe, String email){
+		 
+		 List<T> resultados = new ArrayList<>();
+
+		 Query query = this.getEntityManager().createQuery("SELECT x FROM "+classe.getSimpleName()+" x WHERE x.email LIKE :nome");
+		 query.setParameter("nome", email);
+		 
+		 resultados = query.getResultList();
+		 
+		 return resultados;
+	 }
 
 	public EntityManager getEntityManager() {
 		return entityManager;
