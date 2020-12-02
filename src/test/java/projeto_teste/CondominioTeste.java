@@ -10,6 +10,7 @@ import com.projeto.model.service.CondominioService;
 
 public class CondominioTeste {
 	
+	
 		//@Test(expected = Exception.class)
 		public void salvarCondominioBancoDadosTeste() {
 			Condominio condominio = new Condominio();
@@ -54,7 +55,7 @@ public class CondominioTeste {
 		}
 		
 		
-		//@Test(expected= Exception.class)
+		@Test(expected= Exception.class)
 		public void listarTodosCondominiosTabelaCondominio() {
 			CondominioService condominioService = new CondominioService();
 			List<Condominio> listaCondominio = condominioService.findAll();
@@ -64,7 +65,7 @@ public class CondominioTeste {
 			}
 		}
 		
-		@Test(expected= Exception.class)
+		//@Test(expected= Exception.class)
 		public void buscaEmail() {
 			CondominioService condominioService = new CondominioService();
 			

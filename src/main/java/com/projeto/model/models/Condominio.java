@@ -1,10 +1,15 @@
 package com.projeto.model.models;
 
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -16,7 +21,7 @@ public class Condominio {
 	private String nome_condominio;	
 	private String logradouro;
 	private String cep;
-	private Integer n_instituicao;
+	private int n_instituicao;
 	private String bairro;
 	private String complemento;
 	private String cidade;
@@ -123,8 +128,6 @@ public class Condominio {
 	public void setSenha(String senha) {
 		this.senha = senha;
 	}
-	
-	
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -137,7 +140,7 @@ public class Condominio {
 		result = prime * result + ((estado == null) ? 0 : estado.hashCode());
 		result = prime * result + ((id_condominio == null) ? 0 : id_condominio.hashCode());
 		result = prime * result + ((logradouro == null) ? 0 : logradouro.hashCode());
-		result = prime * result + ((n_instituicao == null) ? 0 : n_instituicao.hashCode());
+		result = prime * result + n_instituicao;
 		result = prime * result + ((nome_condominio == null) ? 0 : nome_condominio.hashCode());
 		result = prime * result + ((senha == null) ? 0 : senha.hashCode());
 		result = prime * result + ((telefone == null) ? 0 : telefone.hashCode());
@@ -192,10 +195,7 @@ public class Condominio {
 				return false;
 		} else if (!logradouro.equals(other.logradouro))
 			return false;
-		if (n_instituicao == null) {
-			if (other.n_instituicao != null)
-				return false;
-		} else if (!n_instituicao.equals(other.n_instituicao))
+		if (n_instituicao != other.n_instituicao)
 			return false;
 		if (nome_condominio == null) {
 			if (other.nome_condominio != null)
@@ -214,8 +214,6 @@ public class Condominio {
 			return false;
 		return true;
 	}
-	
-	
 	@Override
 	public String toString() {
 		return "Condominio [id_condominio=" + id_condominio + ", nome_condominio=" + nome_condominio + ", logradouro="
@@ -223,4 +221,8 @@ public class Condominio {
 				+ ", complemento=" + complemento + ", cidade=" + cidade + ", estado=" + estado + ", telefone="
 				+ telefone + ", email=" + email + ", senha=" + senha + "]";
 	}
+	
+	
+	
+	
 }
