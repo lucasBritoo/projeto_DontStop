@@ -6,6 +6,9 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
+import com.projeto.model.models.Condominio;
+
 import java.awt.Color;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
@@ -25,7 +28,11 @@ public class TelaCondominio extends JFrame {
 	private JPanel contentPane;
 	private JTextField txtUsuario;
 	private JTextField txtVeiculo;
+	
+	private Condominio condominio;
+	
 
+	
 	/**
 	 * Launch the application.
 	 */
@@ -86,6 +93,14 @@ public class TelaCondominio extends JFrame {
 		btncCadastrarUsuario.setFont(new Font("Arial", Font.PLAIN, 14));
 		
 		JButton btnPorteiro = new JButton("CADASTRAR NOVO PORTEIRO");
+		btnPorteiro.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				CadastroPorteiro cadastroPorteiro = new CadastroPorteiro();
+				cadastroPorteiro.setCondominio(condominio);
+				cadastroPorteiro.setVisible(true);
+				
+			}
+		});
 		btnPorteiro.setIcon(new ImageIcon(TelaCondominio.class.getResource("/com/projeto/estrutura/imagens/application_add.png")));
 		btnPorteiro.setFont(new Font("Arial", Font.PLAIN, 14));
 		
@@ -184,4 +199,13 @@ public class TelaCondominio extends JFrame {
 		dispose();
 		
 	}
+	
+	public Condominio getCondominio() {
+		return condominio;
+	}
+
+	public void setCondominio(Condominio condominio) {
+		this.condominio = condominio;
+	}
+
 }

@@ -210,6 +210,7 @@ public class TelaInicial extends JFrame {
 				for(Condominio condominio: listaCondominio) {
 					if(condominio.getEmail().equals(txtEmail.getText()) && condominio.getSenha().equals(new String(passwordSenha.getPassword()))) {
 						TelaCondominio telaCondominio = new TelaCondominio();
+						telaCondominio.setCondominio(condominio);
 						telaCondominio.setVisible(true);
 						dispose();
 						
