@@ -1,4 +1,4 @@
-package com.projeto.view;
+package com.projeto.view.condominio;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -10,6 +10,7 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import com.projeto.estrutura.util.VariaveisProjeto;
+import com.projeto.main.Login;
 import com.projeto.model.models.Condominio;
 import com.projeto.model.service.CondominioService;
 
@@ -65,9 +66,14 @@ public class CadastroCondominio extends JFrame {
 	private JLabel iconeErrado9;
 	private JLabel lblSenhaErrada;
 	private JLabel lblSenha8Caracteres;
+	
+	
+	private Login login;
+	
+	
 	/**
 	 * Launch the application.
-	 */
+	 
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -80,15 +86,22 @@ public class CadastroCondominio extends JFrame {
 			}
 		});
 	}
-
-	/**
-	 * Create the frame.
 	 */
-	public CadastroCondominio() {
+	
+	public CadastroCondominio(Login login) {
+		this.login = login;
+		initiComponents();
+		lblSenhaErrada.setVisible(false);
+		lblSenha8Caracteres.setVisible(false);
+	}
+	
+	private void initiComponents() {
 		setFont(new Font("Arial Black", Font.BOLD, 18));
 		setTitle("Cadastro de Condom\u00EDnio");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 800, 600);
+		setResizable(false);
+		setLocationRelativeTo(null);
 		contentPane = new JPanel();
 		contentPane.setBackground(new Color(175, 238, 238));
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -288,8 +301,7 @@ public class CadastroCondominio extends JFrame {
 		btnVoltar = new JButton("VOLTAR");
 		btnVoltar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				TelaInicial telaInicial = new TelaInicial();
-				telaInicial.setVisible(true);
+				login.setVisible(true);
 				dispose();
 			}
 		});
@@ -494,8 +506,6 @@ public class CadastroCondominio extends JFrame {
 					.addContainerGap(16, Short.MAX_VALUE))
 		);
 		contentPane.setLayout(gl_contentPane);
-		lblSenhaErrada.setVisible(false);
-		lblSenha8Caracteres.setVisible(false);
 	}
 	
 	private boolean verificaNomeCondominio() {

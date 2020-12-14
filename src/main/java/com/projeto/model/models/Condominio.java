@@ -30,6 +30,8 @@ public class Condominio {
 	private String email;
 	private String senha;
 	
+	private List<Porteiro> porteiro;
+	
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -128,6 +130,15 @@ public class Condominio {
 	public void setSenha(String senha) {
 		this.senha = senha;
 	}
+	
+	@OneToMany(mappedBy="id_porteiro")
+	public List<Porteiro> getPorteiro() {
+		return porteiro;
+	}
+	public void setPorteiro(List<Porteiro> porteiro) {
+		this.porteiro = porteiro;
+	}
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;

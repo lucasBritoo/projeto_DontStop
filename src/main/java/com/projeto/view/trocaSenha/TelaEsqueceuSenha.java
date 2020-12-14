@@ -1,4 +1,4 @@
-package com.projeto.view;
+package com.projeto.view.trocaSenha;
 
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
@@ -6,6 +6,9 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
+import com.projeto.main.Login;
+
 import java.awt.Color;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
@@ -24,10 +27,11 @@ public class TelaEsqueceuSenha extends JFrame {
 	private JTextField textField;
 	private JTextField textField_1;
 	private JLabel emailEnviado;
+	
+	private Login login;
 
 	/**
 	 * Launch the application.
-	 */
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -40,13 +44,20 @@ public class TelaEsqueceuSenha extends JFrame {
 			}
 		});
 	}
-
-	/**
-	 * Create the frame.
 	 */
-	public TelaEsqueceuSenha() {
+	
+	
+	public TelaEsqueceuSenha(Login login) {
+		this.login = login;
+		initiComponents();
+		
+	}
+	
+	private void initiComponents() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
+		setResizable(false);
+		setLocationRelativeTo(null);
 		contentPane = new JPanel();
 		contentPane.setBackground(new Color(175, 238, 238));
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -68,8 +79,7 @@ public class TelaEsqueceuSenha extends JFrame {
 		JButton btnVoltar = new JButton("VOLTAR");
 		btnVoltar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				TelaInicial telaInicial = new TelaInicial();
-				telaInicial.setVisible(true);
+				login.setVisible(true);
 				dispose();
 			}
 		});

@@ -1,4 +1,4 @@
-package com.projeto.view;
+package com.projeto.view.porteiro;
 
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
@@ -13,6 +13,7 @@ import com.projeto.model.models.Condominio;
 import com.projeto.model.models.Porteiro;
 import com.projeto.model.service.CondominioService;
 import com.projeto.model.service.PorteiroService;
+import com.projeto.view.condominio.CadastroCondominio;
 
 import java.awt.Color;
 
