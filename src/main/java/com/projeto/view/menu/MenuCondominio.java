@@ -1,20 +1,25 @@
 package com.projeto.view.menu;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
+import javax.swing.JInternalFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import com.projeto.main.Login;
 import com.projeto.model.models.Condominio;
+import com.projeto.view.porteiro.TabelaPorteiro;
 
 import javax.swing.JMenuBar;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import javax.swing.GroupLayout;
+import javax.swing.GroupLayout.Alignment;
 
 public class MenuCondominio extends JFrame {
 
@@ -58,7 +63,11 @@ public class MenuCondominio extends JFrame {
 	
 	public MenuCondominio(Login login) {
 		this.login =login;
+		initComponents();
 		
+	}
+	
+	private void initComponents() {
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 800, 600);
@@ -73,6 +82,18 @@ public class MenuCondominio extends JFrame {
 		menuArquivo.add(menuCondominio);
 		
 		menuPorteiro = new JMenuItem("Porteiro");
+		menuPorteiro.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				TabelaPorteiro tabelaPorteiro = new TabelaPorteiro();
+				centralizaForm(tabelaPorteiro);
+				contentPane.add(tabelaPorteiro);
+				tabelaPorteiro.setSize(800,600);
+				tabelaPorteiro.setResizable(false);
+				
+				tabelaPorteiro.setVisible(true);
+				
+			}
+		});
 		menuArquivo.add(menuPorteiro);
 		
 		menuMotorista = new JMenuItem("Motorista");
@@ -109,14 +130,29 @@ public class MenuCondominio extends JFrame {
 		menuSair.add(menuSairSistema);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-		contentPane.setLayout(new BorderLayout(0, 0));
 		setContentPane(contentPane);
+		GroupLayout gl_contentPane = new GroupLayout(contentPane);
+		gl_contentPane.setHorizontalGroup(
+			gl_contentPane.createParallelGroup(Alignment.LEADING)
+				.addGap(0, 776, Short.MAX_VALUE)
+		);
+		gl_contentPane.setVerticalGroup(
+			gl_contentPane.createParallelGroup(Alignment.LEADING)
+				.addGap(0, 531, Short.MAX_VALUE)
+		);
+		contentPane.setLayout(gl_contentPane);
 	}
+	
 	public Condominio getCondominio() {
 		return condominio;
 	}
 	public void setCondominio(Condominio condominio) {
 		this.condominio = condominio;
 	}
-
+	
+	private void centralizaForm(JInternalFrame frame) {
+		Dimension desktopSize = this.getSize();
+		Dimension internalFrameSize = frame.getSize();
+		frame.setLocation((desktopSize.width - internalFrameSize.width) / 2, (desktopSize.height - internalFrameSize.height)/2);
+	}
 }

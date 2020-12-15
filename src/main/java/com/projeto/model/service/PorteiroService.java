@@ -21,13 +21,14 @@ public class PorteiroService extends ConexaoBancoService{
 		
 		EntityTransaction trx = this.getTransaction();
 		
-		if(validarDigitacao(porteiro) == VariaveisProjeto.DIGITACAO_OK) {
-			
-			
+		
+		toReturn = validarDigitacao(porteiro);
+		if(toReturn == VariaveisProjeto.DIGITACAO_OK) {
 			try {
 				trx.begin();
 				this.getPorteiroDao().save(porteiro);
 				trx.commit();
+				toReturn = VariaveisProjeto.INCLUSAO_REALIZADA;
 				
 			}catch(Exception ex){
 				ex.printStackTrace();
@@ -38,10 +39,7 @@ public class PorteiroService extends ConexaoBancoService{
 			}finally {
 				this.close();
 			}
-		}else {
-			toReturn = VariaveisProjeto.CAMPO_VAZIO;
 		}
-		
 		return toReturn;
 	}
 	
@@ -49,12 +47,14 @@ public class PorteiroService extends ConexaoBancoService{
 		Integer toReturn =0 ;
 		EntityTransaction trx = this.getTransaction();
 		
-		if(validarDigitacao(porteiro) == VariaveisProjeto.DIGITACAO_OK) {
+		toReturn = validarDigitacao(porteiro);
+		if(toReturn == VariaveisProjeto.DIGITACAO_OK) {
 			
 			try {
 				trx.begin();
 				this.getPorteiroDao().update(porteiro);
 				trx.commit();
+				toReturn = VariaveisProjeto.ALTERECAO_REALIZADA;
 			}catch(Exception ex) {
 				ex.printStackTrace();
 				if(trx.isActive()) {
@@ -64,10 +64,7 @@ public class PorteiroService extends ConexaoBancoService{
 			}finally {
 				this.close();
 			}
-		}else {
-			toReturn = VariaveisProjeto.CAMPO_VAZIO;
 		}
-		
 		return toReturn;
 	}
 	
@@ -81,6 +78,8 @@ public class PorteiroService extends ConexaoBancoService{
 			Porteiro porteiroEncontrado = this.getPorteiroDao().findById(porteiro.getId_porteiro());
 			this.getPorteiroDao().remove(porteiroEncontrado);
 			trx.commit();
+			toReturn = VariaveisProjeto.EXCLUSAO_REALIZADA;
+			
 		}catch(Exception ex){
 			ex.printStackTrace();
 			if(trx.isActive()) {
@@ -122,6 +121,14 @@ public class PorteiroService extends ConexaoBancoService{
 	
 	public PorteiroDao getPorteiroDao() {
 		return porteiroDao;
+	}
+	
+	public Integer countTotalRegister() {
+		return porteiroDao.countTotalRegister(Porteiro.class);
+	}
+		
+	public List<Porteiro> listPorteiroPaginacao(Integer numeroPagina, Integer defaultPagina) {
+		return porteiroDao.listUsuarioPaginacao(numeroPagina, defaultPagina);
 	}
 
 }

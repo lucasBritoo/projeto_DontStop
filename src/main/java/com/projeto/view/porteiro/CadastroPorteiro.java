@@ -1,8 +1,5 @@
 package com.projeto.view.porteiro;
 
-import java.awt.BorderLayout;
-import java.awt.EventQueue;
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
@@ -11,7 +8,6 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import com.projeto.estrutura.util.VariaveisProjeto;
 import com.projeto.model.models.Condominio;
 import com.projeto.model.models.Porteiro;
-import com.projeto.model.service.CondominioService;
 import com.projeto.model.service.PorteiroService;
 import com.projeto.view.condominio.CadastroCondominio;
 
@@ -21,7 +17,6 @@ import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
-import javax.swing.Icon;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
@@ -31,19 +26,26 @@ import java.awt.Image;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.JTextField;
 import javax.swing.JPasswordField;
+import javax.swing.JTable;
 import javax.swing.JButton;
+import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.ImageIcon;
 import java.awt.event.ActionListener;
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.IOException;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 
-public class CadastroPorteiro extends JFrame {
+public class CadastroPorteiro extends JDialog {
 
+	
+	private static final long serialVersionUID = 2221180777478057672L;
+	
 	private JPanel contentPane;
 	private JPasswordField passwordConfirmaSenha;
 	private JTextField txtNome;
@@ -68,10 +70,16 @@ public class CadastroPorteiro extends JFrame {
 	private boolean fotoInserida = false;
 	
 	private Condominio condominio;
+	
+	private JTable tabelaPorteiro;
+	private TabelaPorteiroModel tabelaPorteiroModel;
+	
+	private int linha = 0;
+	private int acao = 0;
+	
 
 	/**
 	 * Launch the application.
-	 */
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -85,12 +93,29 @@ public class CadastroPorteiro extends JFrame {
 		});
 	}
 
-	/**
-	 * Create the frame.
 	 */
-	public CadastroPorteiro() {
+	
+	public CadastroPorteiro(JFrame frame, boolean modal, JTable tabelaPorteiro, TabelaPorteiroModel tabelaPorteiroModel, int linha, int acao) {
+		super(frame, modal);
+		
+		
+		this.tabelaPorteiro = tabelaPorteiro;
+		this.tabelaPorteiroModel = tabelaPorteiroModel;
+		this.linha = linha;
+		
+		initComponents();
+		
+		lblSenhaErrada.setVisible(false);
+		lblSenhasDiferentes.setVisible(false);
+		
+		if(acao>=2) {
+			buscarPorteiro();
+		}
+	}
+	
+	private void initComponents() {
 		setTitle("CADASTRO DE PORTEIRO");
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		//setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 800, 600);
 		contentPane = new JPanel();
 		contentPane.setBackground(new Color(175, 238, 238));
@@ -404,8 +429,6 @@ public class CadastroPorteiro extends JFrame {
 					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
 		);
 		contentPane.setLayout(gl_contentPane);
-		lblSenhaErrada.setVisible(false);
-		lblSenhasDiferentes.setVisible(false);
 	}
 	
 	protected void incluirPorteiro() {
@@ -416,6 +439,9 @@ public class CadastroPorteiro extends JFrame {
 			PorteiroService porteiroService= new PorteiroService();
 			toReturn = porteiroService.save(porteiro);
 			JOptionPane.showMessageDialog(null, "Porteiro inserido com sucesso");
+			
+			tabelaPorteiroModel.fireTableDataChanged();
+			porteiro = new Porteiro();
 		}
 		
 		else JOptionPane.showMessageDialog(null, "Erro ao incluir porteiro, verifique seus dados e tente novamente");
@@ -621,4 +647,98 @@ public class CadastroPorteiro extends JFrame {
 	}
 	
 	
+	private void buscarPorteiro() {
+		Porteiro porteiro = new Porteiro();
+		
+		
+		porteiro = tabelaPorteiroModel.getPorteiro(this.linha);
+		
+		txtNome.setText(porteiro.getNome_Porteiro());
+		txtCPF.setText(String.valueOf(porteiro.getCpf_Porteiro()));
+		txtRG.setText(porteiro.getRg_Porteiro());
+		txtTelefone.setText(porteiro.getTelefone());
+		txtEmail.setText(porteiro.getEmail());
+		passwordSenha.setText(porteiro.getSenha());
+		passwordConfirmaSenha.setText(porteiro.getSenha());
+		
+		exibirFoto(porteiro);
+		
+		
+	}
+	
+	private void exibirFoto(Porteiro porteiro) {
+		PorteiroService porteiroService = new PorteiroService();
+		
+		
+		byte[] foto = null;
+		
+		BufferedImage img = null;
+		
+		try {
+			img = ImageIO.read(new ByteArrayInputStream(porteiro.getFoto_porteiro()));
+			lblFoto.setIcon(new ImageIcon(img));
+			
+		}catch(IOException e) {
+			e.printStackTrace();
+		}
+		
+	}
+	
+	
+	protected void alterarPorteiro() {
+		Integer toReturn =0;
+		Porteiro porteiro = pegarDados();
+		
+		Condominio condominio = new Condominio();
+		condominio.setId_condominio(1);
+		//departamento.setNome("Vendas");
+		
+		porteiro.setCondominio(condominio);
+		
+		
+		PorteiroService porteiroService = new PorteiroService();
+		
+		toReturn = porteiroService.update(porteiro);
+		
+		if(toReturn == VariaveisProjeto.CAMPO_VAZIO) {
+			verificaCampos();
+			showMensagem("Campo nome deve ser informado","Erro", JOptionPane.ERROR_MESSAGE);
+		}
+		if(toReturn == VariaveisProjeto.ERRO_ALTERACAO) {
+			showMensagem("Erro na alteração do registro","Erro", JOptionPane.ERROR_MESSAGE );
+		}
+		if(toReturn == VariaveisProjeto.ALTERECAO_REALIZADA) {
+			showMensagem( "Alteração foi realizada com sucesso","OK", JOptionPane.OK_OPTION );
+			
+			
+			tabelaPorteiroModel.fireTableDataChanged();
+			
+			porteiro = new Porteiro();
+			
+		}
+	}
+	
+	private void excluirPorteiro() {
+		
+		Integer toReturn = 0;
+		
+		Porteiro porteiro = pegarDados();
+		
+		PorteiroService porteiroService = new PorteiroService();
+		
+		toReturn = porteiroService.delete(porteiro);
+		
+		if(toReturn == VariaveisProjeto.ERRO_EXCLUSAO) {
+			showMensagem("Erro na exclusao do registro","Erro", JOptionPane.ERROR_MESSAGE);
+		}
+		if(toReturn == VariaveisProjeto.EXCLUSAO_REALIZADA) {
+			showMensagem( "Exclusao realizada com sucesso","OK", JOptionPane.OK_OPTION );
+			porteiro = new Porteiro();
+		}
+	}
+	
+	
+	private void showMensagem(String mensagem, String status, int option) {
+		JOptionPane.showMessageDialog(null, mensagem, status, option );
+	}
 }
