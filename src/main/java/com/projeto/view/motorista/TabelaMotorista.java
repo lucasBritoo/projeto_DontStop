@@ -1,4 +1,4 @@
-package com.projeto.view.porteiro;
+package com.projeto.view.motorista;
 
 import java.awt.EventQueue;
 
@@ -9,8 +9,9 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.table.TableRowSorter;
 
 import com.projeto.model.models.Condominio;
+import com.projeto.model.models.Motorista;
 import com.projeto.model.models.Porteiro;
-import com.projeto.model.service.PorteiroService;
+import com.projeto.model.service.MotoristaService;
 
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
@@ -35,7 +36,7 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.Color;
 
-public class TabelaPorteiro extends JInternalFrame {
+public class TabelaMotorista extends JInternalFrame {
 
 	/**
 	 * 
@@ -61,23 +62,24 @@ public class TabelaPorteiro extends JInternalFrame {
 	private JButton btnExcluir;
 	private JButton btnSair;
 	
-	private static final int id_porteiro= 0;
-	private static final int nome_Porteiro = 1;
-	private static final int cpf_Porteiro= 2;
-	private static final int rg_Porteiro= 3 ;
-	private static final int email= 4;
-	private static final int telefone= 5;
+	private static final int id_motorista= 0;
+	private static final int nome_Motorista = 1;
+	private static final int cpf_Motorista= 2;
+	private static final int rg_Motorista= 3 ;
+	private static final int telefone= 4;
+	private static final int email= 5;
 
 	private Condominio condominio;
-	private TabelaPorteiroModel tabelaPorteiroModel;
-	private TableRowSorter<TabelaPorteiroModel> sortTabelaPorteiro;
+	//private Porteiro porteiro;
+	private TabelaMotoristaModel tabelaMotoristaModel;
+	private TableRowSorter<TabelaMotoristaModel> sortTabelaMotorista;
 	
 	
 	private Integer totalData= 0;
 	private Integer defaultPagina= 5;
 	private Integer totalPagina= 1;
 	private Integer numeroPagina= 1;
-	private JTable tabelaPorteiro;
+	private JTable tabelaMotorista;
 	/**
 	 * Launch the application.
 	 
@@ -85,7 +87,7 @@ public class TabelaPorteiro extends JInternalFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					TabelaPorteiro frame = new TabelaPorteiro();
+					TabelaMotorista frame = new TabelaMotorista();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -95,13 +97,14 @@ public class TabelaPorteiro extends JInternalFrame {
 	}
 	 * Create the frame.
 	 */
-	public TabelaPorteiro(Condominio condominio) {
+	public TabelaMotorista(Condominio condominio) {
 		this.condominio = condominio;
+		//this.porteiro = porteiro;
 		initComponents();
 		iniciaPaginacao();
 	}
 	private void initComponents() {
-		setTitle("Tabela Porteiro");
+		setTitle("Tabela Motorista");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 800, 600);
 		setResizable(false);
@@ -121,14 +124,14 @@ public class TabelaPorteiro extends JInternalFrame {
 			public void keyReleased(KeyEvent e) {
 				String filtro = txtPesquisar.getText();
 				
-				filtraNomePorteiro(filtro);
+				filtraNomeMotorista(filtro);
 			}
 		});
 		txtPesquisar.setToolTipText("Digite um CPF");
 		txtPesquisar.setColumns(10);
 		
 		btnPesquisar = new JButton("");
-		btnPesquisar.setIcon(new ImageIcon(TabelaPorteiro.class.getResource("/com/projeto/estrutura/imagens/search.png")));
+		btnPesquisar.setIcon(new ImageIcon(TabelaMotorista.class.getResource("/com/projeto/estrutura/imagens/search.png")));
 		btnPesquisar.setToolTipText("Buscar");
 		
 		lblPagina = new JLabel("P\u00E1gina:");
@@ -161,7 +164,7 @@ public class TabelaPorteiro extends JInternalFrame {
 		btnInserir = new JButton("INSERIR");
 		btnInserir.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				incluirPorteiro();
+				incluirMotorista();
 				iniciaPaginacao();
 			}
 		});
@@ -170,7 +173,7 @@ public class TabelaPorteiro extends JInternalFrame {
 		btnAlterar = new JButton("ALTERAR");
 		btnAlterar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				alterarPorteiro();
+				alterarMotorista();
 				iniciaPaginacao();
 			}
 		});
@@ -179,7 +182,7 @@ public class TabelaPorteiro extends JInternalFrame {
 		btnExcluir = new JButton("EXCLUIR");
 		btnExcluir.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				excluirPorteiro();
+				excluirMotorista();
 				iniciaPaginacao();
 			}
 		});
@@ -200,7 +203,7 @@ public class TabelaPorteiro extends JInternalFrame {
 				iniciaPaginacao();
 			}
 		});
-		btnPrimeiro.setIcon(new ImageIcon(TabelaPorteiro.class.getResource("/com/projeto/estrutura/imagens/go-first.png")));
+		btnPrimeiro.setIcon(new ImageIcon(TabelaMotorista.class.getResource("/com/projeto/estrutura/imagens/go-first.png")));
 		btnPrimeiro.setToolTipText("Primeiro");
 		
 		btnProximo = new JButton("");
@@ -213,7 +216,7 @@ public class TabelaPorteiro extends JInternalFrame {
 				}
 			}
 		});
-		btnProximo.setIcon(new ImageIcon(TabelaPorteiro.class.getResource("/com/projeto/estrutura/imagens/go-next.png")));
+		btnProximo.setIcon(new ImageIcon(TabelaMotorista.class.getResource("/com/projeto/estrutura/imagens/go-next.png")));
 		btnProximo.setToolTipText("Pr\u00F3ximo");
 		
 		btnAnterior = new JButton("");
@@ -225,7 +228,7 @@ public class TabelaPorteiro extends JInternalFrame {
 				}
 			}
 		});
-		btnAnterior.setIcon(new ImageIcon(TabelaPorteiro.class.getResource("/com/projeto/estrutura/imagens/go-previous.png")));
+		btnAnterior.setIcon(new ImageIcon(TabelaMotorista.class.getResource("/com/projeto/estrutura/imagens/go-previous.png")));
 		btnAnterior.setToolTipText("Anterior");
 		
 		btnUltimo = new JButton("");
@@ -235,7 +238,7 @@ public class TabelaPorteiro extends JInternalFrame {
 				iniciaPaginacao();
 			}
 		});
-		btnUltimo.setIcon(new ImageIcon(TabelaPorteiro.class.getResource("/com/projeto/estrutura/imagens/go-last.png")));
+		btnUltimo.setIcon(new ImageIcon(TabelaMotorista.class.getResource("/com/projeto/estrutura/imagens/go-last.png")));
 		btnUltimo.setToolTipText("\u00DAltimo");
 		GroupLayout gl_contentPane = new GroupLayout(contentPane);
 		gl_contentPane.setHorizontalGroup(
@@ -330,13 +333,13 @@ public class TabelaPorteiro extends JInternalFrame {
 					.addContainerGap(21, Short.MAX_VALUE))
 		);
 		
-		tabelaPorteiro = new JTable();
-		scrollPane.setViewportView(tabelaPorteiro);
+		tabelaMotorista = new JTable();
+		scrollPane.setViewportView(tabelaMotorista);
 		contentPane.setLayout(gl_contentPane);
 	}
 	
 	protected void iniciaPaginacao() {
-		totalData = buscaTotalRegistroPorteiro();
+		totalData = buscaTotalRegistroMotorista();
 		
 		defaultPagina = Integer.valueOf(comboBox.getSelectedItem().toString());
 		
@@ -366,31 +369,32 @@ public class TabelaPorteiro extends JInternalFrame {
 			numeroPagina = 1;
 		}
 		
-		tabelaPorteiroModel = new TabelaPorteiroModel();
+		tabelaMotoristaModel = new TabelaMotoristaModel();
 		
-		tabelaPorteiroModel.setListaPorteiro(carregaListaPorteiro(numeroPagina, defaultPagina));
+		tabelaMotoristaModel.setListaMotorista(carregaListaMotorista(numeroPagina, defaultPagina));
 		
-		tabelaPorteiro.setModel(tabelaPorteiroModel);
+		tabelaMotorista.setModel(tabelaMotoristaModel);
 		
-		tabelaPorteiro.setFillsViewportHeight(true);
+		tabelaMotorista.setFillsViewportHeight(true);
 		
-		tabelaPorteiro.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		tabelaMotorista.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		
-		tabelaPorteiroModel.fireTableDataChanged();
+		tabelaMotoristaModel.fireTableDataChanged();
 		
-		sortTabelaPorteiro = new TableRowSorter<TabelaPorteiroModel>(tabelaPorteiroModel);
+		sortTabelaMotorista = new TableRowSorter<TabelaMotoristaModel>(tabelaMotoristaModel);
 		
-		tabelaPorteiro.setRowSorter(sortTabelaPorteiro);
+		tabelaMotorista.setRowSorter(sortTabelaMotorista);
 		
-		tabelaPorteiro.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+		tabelaMotorista.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
 		
 		
-		tabelaPorteiro.getColumnModel().getColumn(id_porteiro).setWidth(11);
-		tabelaPorteiro.getColumnModel().getColumn(nome_Porteiro).setWidth(100);
-		tabelaPorteiro.getColumnModel().getColumn(cpf_Porteiro).setWidth(100);
-		tabelaPorteiro.getColumnModel().getColumn(rg_Porteiro).setWidth(100);
-		tabelaPorteiro.getColumnModel().getColumn(email).setWidth(100);
-		tabelaPorteiro.getColumnModel().getColumn(telefone).setWidth(100);
+		tabelaMotorista.getColumnModel().getColumn(id_motorista).setWidth(11);
+		tabelaMotorista.getColumnModel().getColumn(nome_Motorista).setWidth(50);
+		tabelaMotorista.getColumnModel().getColumn(cpf_Motorista).setWidth(50);
+		tabelaMotorista.getColumnModel().getColumn(rg_Motorista).setWidth(50);
+		tabelaMotorista.getColumnModel().getColumn(email).setWidth(50);
+		tabelaMotorista.getColumnModel().getColumn(telefone).setWidth(50);
+		
 		
 		lblPaginaAtual.setText(String.valueOf(numeroPagina));
 		lblUltimaPagina.setText(String.valueOf(totalData));
@@ -398,72 +402,73 @@ public class TabelaPorteiro extends JInternalFrame {
 	}
 	
 	
-	private void alterarPorteiro() {
-		if(tabelaPorteiro.getSelectedRow() != -1 && tabelaPorteiro.getSelectedRow() < tabelaPorteiroModel.getRowCount()) {
-			int linha = tabelaPorteiro.getSelectedRow();
+	private void alterarMotorista() {
+		if(tabelaMotorista.getSelectedRow() != -1 && tabelaMotorista.getSelectedRow() < tabelaMotoristaModel.getRowCount()) {
+			int linha = tabelaMotorista.getSelectedRow();
 			
-			CadastroPorteiro porteiro = new CadastroPorteiro(new JFrame(), true, tabelaPorteiro, tabelaPorteiroModel, linha, 2, this.condominio);
-			porteiro.setLocationRelativeTo(null);
-			porteiro.setResizable(false);
-			porteiro.setVisible(true);
+			CadastroMotorista motorista = new CadastroMotorista(new JFrame(), true, tabelaMotorista, tabelaMotoristaModel, linha, 2, this.condominio);
+			motorista.setLocationRelativeTo(null);
+			motorista.setResizable(false);
+			motorista.setVisible(true);
 			
 			
 		}
 		
 	}
 
-	private void incluirPorteiro() {
-		CadastroPorteiro porteiro = new CadastroPorteiro(new JFrame(), true, tabelaPorteiro, tabelaPorteiroModel, 0, 1, this.condominio);
-		porteiro.setLocationRelativeTo(null);
-		porteiro.setResizable(false);
-		porteiro.setVisible(true);
+	private void incluirMotorista() {
+		CadastroMotorista motorista = new CadastroMotorista(new JFrame(), true, tabelaMotorista, tabelaMotoristaModel, 0, 1, this.condominio);
+		motorista.setLocationRelativeTo(null);
+		motorista.setResizable(false);
+		motorista.setVisible(true);
 		
 	}
 	
-	private void excluirPorteiro() {
-		if(tabelaPorteiro.getSelectedRow() != -1 && tabelaPorteiro.getSelectedRow() < tabelaPorteiroModel.getRowCount()) {
-			int linha = tabelaPorteiro.getSelectedRow();
+	private void excluirMotorista() {
+		if(tabelaMotorista.getSelectedRow() != -1 && tabelaMotorista.getSelectedRow() < tabelaMotoristaModel.getRowCount()) {
+			int linha = tabelaMotorista.getSelectedRow();
 			
-			CadastroPorteiro porteiro = new CadastroPorteiro(new JFrame(), true, tabelaPorteiro, tabelaPorteiroModel, linha, 3, this.condominio);
-			porteiro.setLocationRelativeTo(null);
-			porteiro.setResizable(false);
-			porteiro.setVisible(true);
+			CadastroMotorista motorista = new CadastroMotorista(new JFrame(), true, tabelaMotorista, tabelaMotoristaModel, linha, 3, this.condominio);
+			motorista.setLocationRelativeTo(null);
+			motorista.setResizable(false);
+			motorista.setVisible(true);
+			
 			
 		}
 	}
 	
-	private List<Porteiro> carregaListaPorteiro(Integer numeroPagina, Integer defaultPagina) {
+	private List<Motorista> carregaListaMotorista(Integer numeroPagina, Integer defaultPagina) {
 		
-		PorteiroService porteiroService = new PorteiroService();
-		List<Porteiro> listaPorteiro = new ArrayList<Porteiro>();
+		MotoristaService motoristaService = new MotoristaService();
+		List<Motorista> listaMotorista = new ArrayList<Motorista>();
 		
-		listaPorteiro = porteiroService.listPorteiroPaginacao((defaultPagina * (numeroPagina - 1)), defaultPagina);
-		return listaPorteiro;
+		listaMotorista = motoristaService.listMotoristaPaginacao((defaultPagina * (numeroPagina - 1)), defaultPagina);
+		return listaMotorista;
 	}
 	
-	private Integer buscaTotalRegistroPorteiro() {
+	private Integer buscaTotalRegistroMotorista() {
 		
 		Integer totalRegistro = 0;
 		
-		PorteiroService porteiroService = new PorteiroService();
-		totalRegistro = porteiroService.countTotalRegister();
+		MotoristaService motoristaService = new MotoristaService();
+		totalRegistro = motoristaService.countTotalRegister();
 		
 		return totalRegistro;
 	}
 	
 	public JTable getTable() {
-		return tabelaPorteiro;
+		return tabelaMotorista;
 	}
 	
-	private void filtraNomePorteiro(String filtro) {
-		RowFilter<TabelaPorteiroModel, Object> rowFilter = null;
+	private void filtraNomeMotorista(String filtro) {
+		RowFilter<TabelaMotoristaModel, Object> rowFilter = null;
 		
 		try {
 			rowFilter = RowFilter.regexFilter(filtro);
 		}catch(PatternSyntaxException e) {
 			return;
 		}
-		sortTabelaPorteiro.setRowFilter(rowFilter);
+		sortTabelaMotorista.setRowFilter(rowFilter);
 		
 	}
 }

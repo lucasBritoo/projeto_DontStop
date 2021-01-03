@@ -11,6 +11,8 @@ import javax.swing.border.EmptyBorder;
 
 import com.projeto.main.Login;
 import com.projeto.model.models.Condominio;
+import com.projeto.model.models.Porteiro;
+import com.projeto.view.motorista.TabelaMotorista;
 import com.projeto.view.porteiro.TabelaPorteiro;
 
 import javax.swing.JMenuBar;
@@ -40,6 +42,7 @@ public class MenuCondominio extends JFrame {
 	private JMenuItem menuHistoricoCompleto;
 	
 	private Condominio condominio;
+	//private Porteiro porteiro;
 	
 	
 	private Login login;
@@ -61,8 +64,9 @@ public class MenuCondominio extends JFrame {
 	 */
 	
 	
-	public MenuCondominio(Login login) {
+	public MenuCondominio(Login login, Condominio condominio) {
 		this.login =login;
+		this.condominio = condominio;
 		initComponents();
 		
 	}
@@ -84,19 +88,19 @@ public class MenuCondominio extends JFrame {
 		menuPorteiro = new JMenuItem("Porteiro");
 		menuPorteiro.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				TabelaPorteiro tabelaPorteiro = new TabelaPorteiro();
-				centralizaForm(tabelaPorteiro);
-				contentPane.add(tabelaPorteiro);
-				tabelaPorteiro.setSize(800,600);
-				tabelaPorteiro.setResizable(false);
+				tabelaPorteiro();
 				
-				tabelaPorteiro.setVisible(true);
 				
 			}
 		});
 		menuArquivo.add(menuPorteiro);
 		
 		menuMotorista = new JMenuItem("Motorista");
+		menuMotorista.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				tabelaMotorista();
+			}
+		});
 		menuArquivo.add(menuMotorista);
 		
 		menuVeiculo = new JMenuItem("Ve\u00EDculo");
@@ -143,11 +147,25 @@ public class MenuCondominio extends JFrame {
 		contentPane.setLayout(gl_contentPane);
 	}
 	
-	public Condominio getCondominio() {
-		return condominio;
+	private void tabelaPorteiro() {
+		TabelaPorteiro tabelaPorteiro = new TabelaPorteiro(condominio);
+		centralizaForm(tabelaPorteiro);
+		contentPane.add(tabelaPorteiro);
+		tabelaPorteiro.setSize(800,600);
+		tabelaPorteiro.setResizable(false);
+		
+		tabelaPorteiro.setVisible(true);
 	}
-	public void setCondominio(Condominio condominio) {
-		this.condominio = condominio;
+
+	private void tabelaMotorista() {
+		TabelaMotorista tabelaMotorista = new TabelaMotorista(condominio);
+		centralizaForm(tabelaMotorista);
+		contentPane.add(tabelaMotorista);
+		tabelaMotorista.setSize(800,600);
+		tabelaMotorista.setResizable(false);
+		
+		tabelaMotorista.setVisible(true);
+		
 	}
 	
 	private void centralizaForm(JInternalFrame frame) {

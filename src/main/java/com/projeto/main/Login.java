@@ -8,7 +8,9 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import com.projeto.model.models.Condominio;
+import com.projeto.model.models.Porteiro;
 import com.projeto.model.service.CondominioService;
+import com.projeto.model.service.PorteiroService;
 import com.projeto.view.condominio.CadastroCondominio;
 import com.projeto.view.menu.MenuCondominio;
 import com.projeto.view.trocaSenha.TelaEsqueceuSenha;
@@ -41,6 +43,7 @@ public class Login extends JFrame {
 	private JPasswordField passwordSenha;
 	
 	private static Login frame;
+	
 
 	/**
 	 * Launch the application.
@@ -232,23 +235,42 @@ public class Login extends JFrame {
 		else {
 			
 			CondominioService condominioService = new CondominioService();
+			PorteiroService porteiroService = new PorteiroService();
 			
 			List<Condominio> listaCondominio = condominioService.findEmail(txtEmail.getText());
+			List<Porteiro> listaPorteiro = porteiroService.findByEmail(txtEmail.getText());
 			
-			if(listaCondominio.isEmpty()) {
+			if(listaCondominio.isEmpty() && listaPorteiro.isEmpty()) {
 				credenciaisInvalidas();
-				
 			}
+			
 			else {
-				for(Condominio condominio: listaCondominio) {
-					if(condominio.getEmail().equals(txtEmail.getText()) && condominio.getSenha().equals(new String(passwordSenha.getPassword()))) {
-						acessoMenuCondominio(condominio);
-						this.setVisible(false);
-						limpaCampos();
-						
+				
+				if(!listaCondominio.isEmpty()) {
+					for(Condominio condominio: listaCondominio) {
+						if(condominio.getEmail().equals(txtEmail.getText()) && condominio.getSenha().equals(new String(passwordSenha.getPassword()))) {
+							acessoMenuCondominio(condominio);
+							this.setVisible(false);
+							limpaCampos();
+							
+						}
+						else {
+							credenciaisInvalidas();
+						}
 					}
-					else {
-						credenciaisInvalidas();
+				}
+			
+				if(!listaPorteiro.isEmpty()) {
+					for(Porteiro porteiro: listaPorteiro) {
+						if(porteiro.getEmail().equals(txtEmail.getText()) && porteiro.getSenha().equals(new String(passwordSenha.getPassword()))) {
+							acessoMenuPorteiro(porteiro);
+							this.setVisible(false);
+							limpaCampos();
+							
+						}
+						else {
+							credenciaisInvalidas();
+						}
 					}
 				}
 				
@@ -257,13 +279,17 @@ public class Login extends JFrame {
 	}
 	
 	private void acessoMenuCondominio(Condominio condominio) {
-		MenuCondominio menuCondominio = new MenuCondominio(frame);
-		menuCondominio.setCondominio(condominio);
+		MenuCondominio menuCondominio = new MenuCondominio(frame, condominio);
+		//menuCondominio.setCondominio(condominio);
 		menuCondominio.setResizable(false);
 		menuCondominio.setExtendedState(JFrame.MAXIMIZED_BOTH);
 		menuCondominio.setVisible(true);
 		
 
+	}
+	
+	private void acessoMenuPorteiro(Porteiro porteiro) {
+		
 	}
 	
 	private void esqueceuSenha() {

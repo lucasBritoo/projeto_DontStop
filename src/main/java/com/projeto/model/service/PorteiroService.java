@@ -112,6 +112,7 @@ public class PorteiroService extends ConexaoBancoService{
 	
 	public Integer validarDigitacao(Porteiro porteiro) {
 		if(VariaveisProjeto.digitacaoCampo(porteiro.getNome_Porteiro())) {
+			System.out.println("EAE PARÇA");
 			return VariaveisProjeto.CAMPO_VAZIO;
 		}
 		else {

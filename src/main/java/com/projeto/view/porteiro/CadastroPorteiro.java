@@ -5,9 +5,12 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
+import org.apache.commons.io.FilenameUtils;
+
 import com.projeto.estrutura.util.VariaveisProjeto;
 import com.projeto.model.models.Condominio;
 import com.projeto.model.models.Porteiro;
+import com.projeto.model.service.MotoristaService;
 import com.projeto.model.service.PorteiroService;
 import com.projeto.view.condominio.CadastroCondominio;
 
@@ -65,9 +68,11 @@ public class CadastroPorteiro extends JDialog {
 	private JLabel icone7;
 	private JLabel lblSenhaErrada;
 	private JLabel lblSenhasDiferentes;
+	private JButton btnSalvar;
 	
 	private JFileChooser fileChooser;
 	private boolean fotoInserida = false;
+	private byte[] byteFoto = null;
 	
 	private Condominio condominio;
 	
@@ -76,7 +81,10 @@ public class CadastroPorteiro extends JDialog {
 	
 	private int linha = 0;
 	private int acao = 0;
+	private JLabel iconeCheckFoto;
 	
+	private Integer id_porteiro;
+	private String extensaoFoto;
 
 	/**
 	 * Launch the application.
@@ -95,13 +103,14 @@ public class CadastroPorteiro extends JDialog {
 
 	 */
 	
-	public CadastroPorteiro(JFrame frame, boolean modal, JTable tabelaPorteiro, TabelaPorteiroModel tabelaPorteiroModel, int linha, int acao) {
+	public CadastroPorteiro(JFrame frame, boolean modal, JTable tabelaPorteiro, TabelaPorteiroModel tabelaPorteiroModel, int linha, int acao, Condominio condominio) {
 		super(frame, modal);
-		
-		
+	
+		this.condominio = condominio;
 		this.tabelaPorteiro = tabelaPorteiro;
 		this.tabelaPorteiroModel = tabelaPorteiroModel;
 		this.linha = linha;
+		this.acao = acao;
 		
 		initComponents();
 		
@@ -167,10 +176,25 @@ public class CadastroPorteiro extends JDialog {
 			}
 		});
 		
-		JButton btnSalvar = new JButton("SALVAR");
+		btnSalvar = new JButton("SALVAR");
+		
+		if(acao == 3) {
+			btnSalvar.setText("EXCLUIR");
+		}
+		
 		btnSalvar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				incluirPorteiro();
+				if(acao == 1) {
+					incluirPorteiro();
+				}
+				
+				if(acao == 2) {
+					alterarPorteiro();
+				}
+				
+				if(acao == 3) {
+					excluirPorteiro();
+				}
 			}
 		});
 		btnSalvar.setIcon(new ImageIcon(CadastroPorteiro.class.getResource("/com/projeto/estrutura/imagens/attach.png")));
@@ -279,6 +303,8 @@ public class CadastroPorteiro extends JDialog {
 		lblSenhasDiferentes = new JLabel("As senhas n\u00E3o s\u00E3o iguais");
 		lblSenhasDiferentes.setFont(new Font("Tahoma", Font.PLAIN, 8));
 		lblSenhasDiferentes.setForeground(Color.RED);
+		
+		iconeCheckFoto = new JLabel("");
 		GroupLayout gl_contentPane = new GroupLayout(contentPane);
 		gl_contentPane.setHorizontalGroup(
 			gl_contentPane.createParallelGroup(Alignment.LEADING)
@@ -327,11 +353,13 @@ public class CadastroPorteiro extends JDialog {
 							.addComponent(lblNewLabel_1_1, GroupLayout.PREFERRED_SIZE, 220, GroupLayout.PREFERRED_SIZE))
 						.addGroup(gl_contentPane.createSequentialGroup()
 							.addGap(55)
-							.addComponent(btnInserirFoto))
+							.addComponent(btnInserirFoto)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(iconeCheckFoto, GroupLayout.PREFERRED_SIZE, 24, GroupLayout.PREFERRED_SIZE))
 						.addGroup(gl_contentPane.createSequentialGroup()
 							.addContainerGap()
-							.addGroup(gl_contentPane.createParallelGroup(Alignment.TRAILING)
-								.addGroup(Alignment.LEADING, gl_contentPane.createSequentialGroup()
+							.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+								.addGroup(gl_contentPane.createSequentialGroup()
 									.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
 										.addComponent(lblNewLabel_8)
 										.addComponent(lblNewLabel_7)
@@ -352,8 +380,7 @@ public class CadastroPorteiro extends JDialog {
 											.addPreferredGap(ComponentPlacement.RELATED)
 											.addComponent(lblSenhasDiferentes, GroupLayout.PREFERRED_SIZE, 166, GroupLayout.PREFERRED_SIZE))
 										.addComponent(icone5, GroupLayout.PREFERRED_SIZE, 24, GroupLayout.PREFERRED_SIZE)))
-								.addComponent(lblNewLabel_2_1, Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 731, GroupLayout.PREFERRED_SIZE))
-							.addPreferredGap(ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+								.addComponent(lblNewLabel_2_1, GroupLayout.PREFERRED_SIZE, 731, GroupLayout.PREFERRED_SIZE))))
 					.addGap(35))
 		);
 		gl_contentPane.setVerticalGroup(
@@ -394,7 +421,9 @@ public class CadastroPorteiro extends JDialog {
 								.addComponent(icone3, GroupLayout.PREFERRED_SIZE, 16, GroupLayout.PREFERRED_SIZE)))
 						.addComponent(lblFoto, GroupLayout.PREFERRED_SIZE, 185, GroupLayout.PREFERRED_SIZE))
 					.addPreferredGap(ComponentPlacement.UNRELATED)
-					.addComponent(btnInserirFoto)
+					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+						.addComponent(btnInserirFoto)
+						.addComponent(iconeCheckFoto, GroupLayout.PREFERRED_SIZE, 16, GroupLayout.PREFERRED_SIZE))
 					.addGap(25)
 					.addComponent(lblNewLabel_1_1, GroupLayout.PREFERRED_SIZE, 14, GroupLayout.PREFERRED_SIZE)
 					.addPreferredGap(ComponentPlacement.RELATED)
@@ -431,50 +460,7 @@ public class CadastroPorteiro extends JDialog {
 		contentPane.setLayout(gl_contentPane);
 	}
 	
-	protected void incluirPorteiro() {
-		Integer toReturn =0;
-		Porteiro porteiro = pegarDados();
-		
-		if(verificaCampos()) {
-			PorteiroService porteiroService= new PorteiroService();
-			toReturn = porteiroService.save(porteiro);
-			JOptionPane.showMessageDialog(null, "Porteiro inserido com sucesso");
-			
-			tabelaPorteiroModel.fireTableDataChanged();
-			porteiro = new Porteiro();
-		}
-		
-		else JOptionPane.showMessageDialog(null, "Erro ao incluir porteiro, verifique seus dados e tente novamente");
-		
-	
-	}
-	
-	public Porteiro pegarDados() {
-		Porteiro porteiro  = new Porteiro();
-		
-		if(verificaCampos()) {
-			porteiro.setNome_Porteiro(txtNome.getText());
-			porteiro.setCpf_Porteiro(Integer.parseInt(txtCPF.getText()));
-			porteiro.setRg_Porteiro(txtRG.getText());
-			porteiro.setEmail(txtEmail.getText());
-			porteiro.setSenha(new String(passwordSenha.getPassword()));
-			porteiro.setTelefone(txtTelefone.getText());
-			porteiro.setCondominio(condominio);
-			porteiro.setFoto_porteiro(converterFoto());
-		}
-		
-		return porteiro;
-	}
-	
-	public boolean verificaCampos() {
-		
-		if(verificaNome() && verificaCPF() && verificaRG() && verificaTelefone() && verificaEmail() && verificaSenha() &&
-				verificaConfirmaSenha() && verificaFoto()) {
-			return true;
-		}
-		else return false;
-	}
-	
+
 	private boolean verificaNome() {
 		if(VariaveisProjeto.digitacaoCampo(txtNome.getText())) {
 			icone1.setIcon(new ImageIcon(CadastroCondominio.class.getResource("/com/projeto/estrutura/imagens/iconFechar.png")));
@@ -592,32 +578,24 @@ public class CadastroPorteiro extends JDialog {
 	
 	private boolean verificaFoto() {
 		if(fotoInserida) {
+			iconeCheckFoto.setIcon(new ImageIcon(CadastroCondominio.class.getResource("/com/projeto/estrutura/imagens/ok.png")));
 			return true;
 		}
 		else {
+			iconeCheckFoto.setIcon(new ImageIcon(CadastroCondominio.class.getResource("/com/projeto/estrutura/imagens/iconFechar.png")));
 			return false;
 		}
 	}
 	
-	private byte[] converterFoto() {
+	public boolean verificaCampos() {
 		
-		try {
-			BufferedImage foto = ImageIO.read(new File(fileChooser.getSelectedFile().getPath()));
-			ByteArrayOutputStream bytesImg = new ByteArrayOutputStream();
-			ImageIO.write((BufferedImage)foto, "jpg", bytesImg);
-			bytesImg.flush();
-			byte[] byteArray = bytesImg.toByteArray();
-			bytesImg.close();
-			
-			return byteArray;
-			
-		}catch(Exception ex) {
-			ex.printStackTrace();
-			
-			return null;
+		if(verificaNome() && verificaCPF() && verificaRG() && verificaTelefone() && verificaEmail() && verificaSenha() &&
+				verificaConfirmaSenha() && verificaFoto()) {
+			return true;
 		}
+		else return false;
 	}
-
+	
 	
 	public void inserirFoto() {
 		fileChooser = new JFileChooser();
@@ -628,24 +606,152 @@ public class CadastroPorteiro extends JDialog {
 		int retorno = fileChooser.showOpenDialog(this);
 		
 		if(retorno == JFileChooser.APPROVE_OPTION) {
+			extensaoFoto = FilenameUtils.getExtension(fileChooser.getSelectedFile().getPath());
+			
 			ImageIcon image = new ImageIcon(fileChooser.getSelectedFile().getPath());
 			image.setImage(image.getImage().getScaledInstance(lblFoto.getWidth(), lblFoto.getHeight(), Image.SCALE_DEFAULT));
+			
 			lblFoto.setIcon(image);
 			fotoInserida = true;
+			byteFoto = converterFoto();
 		}
 		else {
 			fotoInserida = false;
 		}
 		
 	}
-	public Condominio getCondominio() {
-		return condominio;
-	}
-
-	public void setCondominio(Condominio condominio) {
-		this.condominio = condominio;
+	
+	private byte[] converterFoto() {
+		
+		try {
+			BufferedImage foto = ImageIO.read(new File(fileChooser.getSelectedFile().getPath()));
+			ByteArrayOutputStream bytesImg = new ByteArrayOutputStream();
+			
+			if(extensaoFoto.equals("png")) {
+				ImageIO.write((BufferedImage)foto, "png", bytesImg);
+			}
+			
+			if(extensaoFoto.equals("jpg")) {
+				ImageIO.write((BufferedImage)foto, "jpg", bytesImg);
+			}
+			
+			bytesImg.flush();
+			byte[] byteArray = bytesImg.toByteArray();
+			bytesImg.close();
+				
+			return byteArray;
+			
+		}catch(Exception ex) {
+			ex.printStackTrace();
+			
+			return null;
+		}
 	}
 	
+	
+	private void exibirFoto(Porteiro porteiro) {
+	
+		byte[] foto = null;
+		
+		BufferedImage img = null;
+		
+		try {
+			img = ImageIO.read(new ByteArrayInputStream(porteiro.getFoto_porteiro()));
+			this.byteFoto = porteiro.getFoto_porteiro();
+			lblFoto.setIcon(new ImageIcon(img));
+			fotoInserida = true;
+			
+		}catch(IOException e) {
+			e.printStackTrace();
+			fotoInserida = false;
+		}
+		
+	}
+	
+	protected void incluirPorteiro() {
+		Integer toReturn =0;
+		Porteiro porteiro = pegarDados();
+		
+		if(verificaCampos()) {
+			PorteiroService porteiroService= new PorteiroService();
+			toReturn = porteiroService.save(porteiro);
+			JOptionPane.showMessageDialog(null, "Porteiro inserido com sucesso");
+			
+			tabelaPorteiroModel.fireTableDataChanged();
+			porteiro = new Porteiro();
+		}
+		
+		else JOptionPane.showMessageDialog(null, "Erro ao incluir porteiro, verifique seus dados e tente novamente");
+		
+	
+	}
+	
+	protected void alterarPorteiro() {
+		Integer toReturn =0;
+		Porteiro porteiro = pegarDados();
+		porteiro.setId_porteiro(id_porteiro);
+		
+		PorteiroService porteiroService = new PorteiroService();
+		
+		toReturn = porteiroService.update(porteiro);
+		
+		if(toReturn == VariaveisProjeto.CAMPO_VAZIO) {
+			verificaCampos();
+			showMensagem("Campo nome deve ser informado");
+		}
+		if(toReturn == VariaveisProjeto.ERRO_ALTERACAO) {
+			showMensagem("Erro na alteração do registro");
+		}
+		if(toReturn == VariaveisProjeto.ALTERECAO_REALIZADA) {
+			showMensagem( "Alteração foi realizada com sucesso");
+			
+			tabelaPorteiroModel.fireTableDataChanged();
+			
+			porteiro = new Porteiro();
+			
+		}
+	}
+	
+	private void excluirPorteiro() {
+		
+		if(confirmarAcao()) {
+			Integer toReturn = 0;
+			
+			Porteiro porteiro = pegarDados();
+			porteiro.setId_porteiro(id_porteiro);
+			
+			PorteiroService porteiroService = new PorteiroService();
+			
+			toReturn = porteiroService.delete(porteiro);
+			
+			if(toReturn == VariaveisProjeto.ERRO_EXCLUSAO) {
+				showMensagem("Erro na exclusao do registro");
+			}
+			if(toReturn == VariaveisProjeto.EXCLUSAO_REALIZADA) {
+				showMensagem( "Exclusao realizada com sucesso");
+				porteiro = new Porteiro();
+				dispose();
+			}
+		}
+		
+	}
+
+	public Porteiro pegarDados() {
+		Porteiro porteiro  = new Porteiro();
+		
+		if(verificaCampos()) {
+			porteiro.setNome_Porteiro(txtNome.getText());
+			porteiro.setCpf_Porteiro(Integer.parseInt((txtCPF.getText())));
+			porteiro.setRg_Porteiro(txtRG.getText());
+			porteiro.setEmail(txtEmail.getText());
+			porteiro.setSenha(new String(passwordSenha.getPassword()));
+			porteiro.setTelefone(txtTelefone.getText());
+			porteiro.setCondominio(condominio);
+			porteiro.setFoto_porteiro(this.byteFoto);
+		}
+			
+		return porteiro;
+	}
 	
 	private void buscarPorteiro() {
 		Porteiro porteiro = new Porteiro();
@@ -660,85 +766,25 @@ public class CadastroPorteiro extends JDialog {
 		txtEmail.setText(porteiro.getEmail());
 		passwordSenha.setText(porteiro.getSenha());
 		passwordConfirmaSenha.setText(porteiro.getSenha());
-		
+		id_porteiro = porteiro.getId_porteiro();
 		exibirFoto(porteiro);
 		
-		
 	}
 	
-	private void exibirFoto(Porteiro porteiro) {
-		PorteiroService porteiroService = new PorteiroService();
+	private boolean confirmarAcao() {
+		Object[] options = {"SIM", "NAO"};
 		
+		Integer confirmaAcao = JOptionPane.showOptionDialog(null, "DESEJA REALMENTE EXCLUIR ESTE CADASTRO?", "EXCLUIR", 
+				0, JOptionPane.QUESTION_MESSAGE, null, options, options[1]);
 		
-		byte[] foto = null;
-		
-		BufferedImage img = null;
-		
-		try {
-			img = ImageIO.read(new ByteArrayInputStream(porteiro.getFoto_porteiro()));
-			lblFoto.setIcon(new ImageIcon(img));
-			
-		}catch(IOException e) {
-			e.printStackTrace();
+		if(confirmaAcao == 0) {
+			return true;
 		}
 		
+		else return false;
 	}
 	
-	
-	protected void alterarPorteiro() {
-		Integer toReturn =0;
-		Porteiro porteiro = pegarDados();
-		
-		Condominio condominio = new Condominio();
-		condominio.setId_condominio(1);
-		//departamento.setNome("Vendas");
-		
-		porteiro.setCondominio(condominio);
-		
-		
-		PorteiroService porteiroService = new PorteiroService();
-		
-		toReturn = porteiroService.update(porteiro);
-		
-		if(toReturn == VariaveisProjeto.CAMPO_VAZIO) {
-			verificaCampos();
-			showMensagem("Campo nome deve ser informado","Erro", JOptionPane.ERROR_MESSAGE);
-		}
-		if(toReturn == VariaveisProjeto.ERRO_ALTERACAO) {
-			showMensagem("Erro na alteração do registro","Erro", JOptionPane.ERROR_MESSAGE );
-		}
-		if(toReturn == VariaveisProjeto.ALTERECAO_REALIZADA) {
-			showMensagem( "Alteração foi realizada com sucesso","OK", JOptionPane.OK_OPTION );
-			
-			
-			tabelaPorteiroModel.fireTableDataChanged();
-			
-			porteiro = new Porteiro();
-			
-		}
-	}
-	
-	private void excluirPorteiro() {
-		
-		Integer toReturn = 0;
-		
-		Porteiro porteiro = pegarDados();
-		
-		PorteiroService porteiroService = new PorteiroService();
-		
-		toReturn = porteiroService.delete(porteiro);
-		
-		if(toReturn == VariaveisProjeto.ERRO_EXCLUSAO) {
-			showMensagem("Erro na exclusao do registro","Erro", JOptionPane.ERROR_MESSAGE);
-		}
-		if(toReturn == VariaveisProjeto.EXCLUSAO_REALIZADA) {
-			showMensagem( "Exclusao realizada com sucesso","OK", JOptionPane.OK_OPTION );
-			porteiro = new Porteiro();
-		}
-	}
-	
-	
-	private void showMensagem(String mensagem, String status, int option) {
-		JOptionPane.showMessageDialog(null, mensagem, status, option );
+	private void showMensagem(String mensagem) {
+		JOptionPane.showMessageDialog(null, mensagem);
 	}
 }
