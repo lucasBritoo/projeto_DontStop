@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.16.0.final using JasperReports Library version 6.16.0-48579d909b7943b64690c65c71e07e0b80981928  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="rel_porteiro" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="c2db2ad2-8661-40c5-a831-b203fb11712c">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<field name="id_porteiro" class="java.lang.Integer"/>
+	<field name="nome_Porteiro" class="java.lang.String"/>
+	<field name="cpf_Porteiro" class="java.lang.Long"/>
+	<field name="email" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<pageHeader>
+		<band height="35" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="555" height="35" uuid="74692a9d-a25a-4159-9959-5331d8fa8237"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[RELATÓRIO DE PORTEIROS]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="43" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="141" height="43" uuid="59b03bb5-d0a1-473c-9a51-d8a4d7fdf301">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="6ba62848-d199-4700-86d8-e23acfb65977"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Código]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="141" y="0" width="138" height="43" uuid="29849176-14ee-4f0a-83db-893ad545d736">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="0b8ed5e3-2dce-4127-abbc-62c9f963fe26"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Nome]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="279" y="0" width="138" height="43" uuid="ce143274-cf10-49fe-a635-a8dba8d36458">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="95abb4c0-2dd7-48bf-8a04-616bfce0d79f"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[CPF]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="417" y="0" width="138" height="43" uuid="eef946d7-ddc0-4c83-8aaa-1e21f6b3ffa0">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="9d48d14e-bc28-4950-97de-4f9297642090"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[E-mail]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="40" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="141" height="40" uuid="614467bd-dc43-4fab-829b-163589e419e2">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="6ba62848-d199-4700-86d8-e23acfb65977"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{id_porteiro}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="141" y="0" width="138" height="40" uuid="fc6f1e33-75a9-44d0-9d8e-e827d6346d49">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="0b8ed5e3-2dce-4127-abbc-62c9f963fe26"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{nome_Porteiro}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="279" y="0" width="138" height="40" uuid="b2be2043-e396-455f-874d-9dee6f74667d">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="95abb4c0-2dd7-48bf-8a04-616bfce0d79f"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{cpf_Porteiro}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="417" y="0" width="138" height="40" uuid="b36119a5-d4aa-4578-97f4-9396954e52c5">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="9d48d14e-bc28-4950-97de-4f9297642090"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{email}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="39" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="100" height="39" uuid="8274d1cf-004a-404d-ba8f-6a8c9d220728"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<text><![CDATA[Data Emissão:  ]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="110" y="0" width="100" height="39" uuid="9340c019-fdff-4953-9c37-94c1fdf6334d"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="455" y="0" width="100" height="39" uuid="dcf3e98f-a47d-4c59-9d5d-e4a5f92454b2"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="350" y="0" width="100" height="39" uuid="5c4d6e76-120b-4572-8354-d696cbad7e61"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<text><![CDATA[Página: ]]></text>
+			</staticText>
+		</band>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+</jasperReport>

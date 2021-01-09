@@ -6,6 +6,11 @@ public class VariaveisProjeto {
 	
 	public static final String PERSISTENCE_UNIT_NAME = "dontStop";
 	
+	//configurações básicas para geração de relatório
+	public static final String DIRETORIO_RELATORIO = "reports/";
+	public static final String SUFIXO_RELATORIO_COMPILADO = ".jasper";
+	public static final String SUFIXO_RELATORIO_FONTE = ".jrxml";
+	
 	public static final Integer ERRO_INCLUSAO = 10;
 	public static final Integer ERRO_ALTERACAO = 20;
 	public static final Integer ERRO_EXCLUSAO = 30;

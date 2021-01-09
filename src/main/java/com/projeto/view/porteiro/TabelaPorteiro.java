@@ -78,6 +78,7 @@ public class TabelaPorteiro extends JInternalFrame {
 	private Integer totalPagina= 1;
 	private Integer numeroPagina= 1;
 	private JTable tabelaPorteiro;
+	private JButton btnRelatorio;
 	/**
 	 * Launch the application.
 	 
@@ -98,7 +99,7 @@ public class TabelaPorteiro extends JInternalFrame {
 	public TabelaPorteiro(Condominio condominio) {
 		this.condominio = condominio;
 		initComponents();
-		iniciaPaginacao();
+		//iniciaPaginacao();
 	}
 	private void initComponents() {
 		setTitle("Tabela Porteiro");
@@ -237,6 +238,16 @@ public class TabelaPorteiro extends JInternalFrame {
 		});
 		btnUltimo.setIcon(new ImageIcon(TabelaPorteiro.class.getResource("/com/projeto/estrutura/imagens/go-last.png")));
 		btnUltimo.setToolTipText("\u00DAltimo");
+		
+		btnRelatorio = new JButton("RELAT\u00D3RIO");
+		btnRelatorio.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				imprimeRelatorio();
+			}
+
+		});
+		btnRelatorio.setFont(new Font("Arial", Font.PLAIN, 16));
 		GroupLayout gl_contentPane = new GroupLayout(contentPane);
 		gl_contentPane.setHorizontalGroup(
 			gl_contentPane.createParallelGroup(Alignment.LEADING)
@@ -273,15 +284,17 @@ public class TabelaPorteiro extends JInternalFrame {
 							.addGap(10)
 							.addComponent(lblUltimaPagina, GroupLayout.PREFERRED_SIZE, 29, GroupLayout.PREFERRED_SIZE))
 						.addGroup(gl_contentPane.createSequentialGroup()
-							.addGap(87)
+							.addGap(43)
 							.addComponent(btnInserir, GroupLayout.PREFERRED_SIZE, 115, GroupLayout.PREFERRED_SIZE)
 							.addGap(18)
 							.addComponent(btnAlterar, GroupLayout.PREFERRED_SIZE, 125, GroupLayout.PREFERRED_SIZE)
 							.addGap(18)
 							.addComponent(btnExcluir, GroupLayout.PREFERRED_SIZE, 119, GroupLayout.PREFERRED_SIZE)
 							.addGap(18)
-							.addComponent(btnSair, GroupLayout.PREFERRED_SIZE, 104, GroupLayout.PREFERRED_SIZE)))
-					.addContainerGap(57, Short.MAX_VALUE))
+							.addComponent(btnSair, GroupLayout.PREFERRED_SIZE, 104, GroupLayout.PREFERRED_SIZE)
+							.addPreferredGap(ComponentPlacement.UNRELATED)
+							.addComponent(btnRelatorio)))
+					.addContainerGap(53, Short.MAX_VALUE))
 		);
 		gl_contentPane.setVerticalGroup(
 			gl_contentPane.createParallelGroup(Alignment.TRAILING)
@@ -322,17 +335,26 @@ public class TabelaPorteiro extends JInternalFrame {
 									.addComponent(btnProximo, GroupLayout.PREFERRED_SIZE, 27, GroupLayout.PREFERRED_SIZE)
 									.addComponent(btnUltimo)))))
 					.addGap(52)
-					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+					.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
 						.addComponent(btnInserir, GroupLayout.PREFERRED_SIZE, 27, GroupLayout.PREFERRED_SIZE)
 						.addComponent(btnAlterar, GroupLayout.PREFERRED_SIZE, 27, GroupLayout.PREFERRED_SIZE)
 						.addComponent(btnExcluir, GroupLayout.PREFERRED_SIZE, 27, GroupLayout.PREFERRED_SIZE)
-						.addComponent(btnSair, GroupLayout.PREFERRED_SIZE, 27, GroupLayout.PREFERRED_SIZE))
+						.addComponent(btnSair, GroupLayout.PREFERRED_SIZE, 27, GroupLayout.PREFERRED_SIZE)
+						.addComponent(btnRelatorio, GroupLayout.PREFERRED_SIZE, 27, GroupLayout.PREFERRED_SIZE))
 					.addContainerGap(21, Short.MAX_VALUE))
 		);
 		
 		tabelaPorteiro = new JTable();
 		scrollPane.setViewportView(tabelaPorteiro);
 		contentPane.setLayout(gl_contentPane);
+	}
+	
+	private void imprimeRelatorio() {
+		RelPorteiro relPorteiro = new RelPorteiro(new JFrame(), true);
+		relPorteiro.setLocationRelativeTo(null);
+		setVisible(false);
+		relPorteiro.setVisible(true);
+		
 	}
 	
 	protected void iniciaPaginacao() {
