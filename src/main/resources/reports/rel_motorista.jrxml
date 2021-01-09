@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.16.0.final using JasperReports Library version 6.16.0-48579d909b7943b64690c65c71e07e0b80981928  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="rel_motorista" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="a06e50e9-fe1b-4dcd-80d6-cf583e43d00b">
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<field name="id_motorista" class="java.lang.Integer"/>
+	<field name="nome_motorista" class="java.lang.String"/>
+	<field name="telefone_motorista" class="java.lang.String"/>
+	<field name="email_motorista" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<pageHeader>
+		<band height="36" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="6" width="555" height="30" uuid="00759fa6-eabe-47fe-b490-e743c920defc"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[RELATÓRIO DE MOTORISTAS]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="31" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="141" height="31" uuid="54a0c6e7-caf9-4461-8cc7-ac95f642a3f0">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="fe523464-0736-49a0-90f7-647b47752a2d"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[CÓDIGO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="141" y="0" width="138" height="31" uuid="e6889d56-37c8-4b59-9400-9dadf2e3aa91">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="caf90cf8-a018-41a3-a2dd-c887b843af22"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[NOME]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="279" y="0" width="138" height="31" uuid="ba790196-c1fc-47ac-8005-e21c3797179e">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="c8ca1a4f-dca6-4fb2-9458-d068c493e9ce"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[TELEFONE]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="417" y="0" width="138" height="31" uuid="44ca5d22-53f1-449a-8537-0f78eb8fe38c">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="793abea9-c7bb-46a2-9ba9-26eb72f82b3b"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[E-MAIL]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="36" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="141" height="36" uuid="e0d91d32-34f4-49cb-9cec-bb39a675fc3b">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="fe523464-0736-49a0-90f7-647b47752a2d"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{id_motorista}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="141" y="0" width="138" height="36" uuid="e2724106-f94c-491b-98e4-48f728ca6f33">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="caf90cf8-a018-41a3-a2dd-c887b843af22"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{nome_motorista}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="279" y="0" width="138" height="36" uuid="891f8016-c89f-484a-8681-89151333a301">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="c8ca1a4f-dca6-4fb2-9458-d068c493e9ce"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{telefone_motorista}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="417" y="0" width="138" height="36" uuid="d7adc651-c9b3-46a3-99cb-9ae95b1ef119">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="793abea9-c7bb-46a2-9ba9-26eb72f82b3b"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{email_motorista}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+</jasperReport>

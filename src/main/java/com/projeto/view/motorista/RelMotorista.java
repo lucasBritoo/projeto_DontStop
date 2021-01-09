@@ -1,4 +1,4 @@
-package com.projeto.view.porteiro;
+package com.projeto.view.motorista;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
@@ -9,27 +9,24 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-import com.projeto.model.models.Porteiro;
+import com.projeto.model.models.Motorista;
 import com.projeto.model.models.PrintJasperReport;
 import com.projeto.model.service.JasperReportsService;
-import com.projeto.model.service.PorteiroService;
+import com.projeto.model.service.MotoristaService;
 
 import java.awt.event.ActionListener;
 import java.util.List;
 import java.awt.event.ActionEvent;
 
-public class RelPorteiro extends JDialog {
+public class RelMotorista extends JDialog {
 
-	
-	private static final long serialVersionUID = 1L;
-	
+	private static final long serialVersionUID = 6420229797181191581L;
+
 	private final JPanel contentPanel = new JPanel();
 
-	
-	public RelPorteiro(JFrame frame, boolean modal) {
+	public RelMotorista(JFrame frame, boolean modal) {
 		super(frame, modal);
-		
-		
+
 		setBounds(100, 100, 450, 300);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setLayout(new FlowLayout());
@@ -43,19 +40,19 @@ public class RelPorteiro extends JDialog {
 				JButton okButton = new JButton("OK");
 				okButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
-						
-						PorteiroService porteiroService = new PorteiroService();
+
+						MotoristaService motoristaService = new MotoristaService();
 						PrintJasperReport printJasperReport = new PrintJasperReport();
 						JasperReportsService jasperReportsService = new JasperReportsService();
-						
-						List<Porteiro> listaPorteiro = porteiroService.findAll();
-						
-						printJasperReport.setFile("rel_porteiro");
-						printJasperReport.setCollection(listaPorteiro);
-						
+
+						List<Motorista> listaMotorista = motoristaService.findAll();
+
+						printJasperReport.setFile("rel_motorista");
+						printJasperReport.setCollection(listaMotorista);
+
 						setVisible(false);
 						jasperReportsService.generateListReports(printJasperReport);
-						
+
 					}
 				});
 				okButton.setActionCommand("OK");
