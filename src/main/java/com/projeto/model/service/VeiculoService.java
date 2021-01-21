@@ -5,32 +5,32 @@ import java.util.List;
 import javax.persistence.EntityTransaction;
 
 import com.projeto.estrutura.util.VariaveisProjeto;
-import com.projeto.model.dao.MotoristaDao;
-import com.projeto.model.models.Motorista;
+import com.projeto.model.dao.VeiculoDao;
+import com.projeto.model.models.Veiculo;
 
 
 
-public class MotoristaService extends ConexaoBancoService {
+public class VeiculoService extends ConexaoBancoService {
 
-		private MotoristaDao motoristaDao;
+		private VeiculoDao veiculoDao;
 		
 		
-		public MotoristaService() {
-			this.motoristaDao = new MotoristaDao(this.getEntityManager());
+		public VeiculoService() {
+			this.veiculoDao = new VeiculoDao(this.getEntityManager());
 		}
 		
-		public Integer save(Motorista motorista) {
+		public Integer save(Veiculo veiculo) {
 			
 			Integer toReturn =0;
 			
 			EntityTransaction trx = this.getTransaction();
 			
 			
-			toReturn = validarDigitacao(motorista);
+			toReturn = validarDigitacao(veiculo);
 			if(toReturn == VariaveisProjeto.DIGITACAO_OK) {
 				try {
 					trx.begin();
-					this.getMotoristaDao().save(motorista);
+					this.getVeiculoDao().save(veiculo);
 					trx.commit();
 					toReturn = VariaveisProjeto.INCLUSAO_REALIZADA;
 					
@@ -48,16 +48,16 @@ public class MotoristaService extends ConexaoBancoService {
 		}
 		
 		
-		public Integer update(Motorista motorista) {
+		public Integer update(Veiculo veiculo) {
 			Integer toReturn =0 ;
 			EntityTransaction trx = this.getTransaction();
 			
-			toReturn = validarDigitacao(motorista);
+			toReturn = validarDigitacao(veiculo);
 			if(toReturn == VariaveisProjeto.DIGITACAO_OK) {
 				
 				try {
 					trx.begin();
-					this.getMotoristaDao().update(motorista);
+					this.getVeiculoDao().update(veiculo);
 					trx.commit();
 					toReturn = VariaveisProjeto.ALTERECAO_REALIZADA;
 				}catch(Exception ex) {
@@ -73,15 +73,15 @@ public class MotoristaService extends ConexaoBancoService {
 			return toReturn;
 		}
 		
-		public Integer delete(Motorista motorista) {
+		public Integer delete(Veiculo veiculo) {
 			Integer toReturn = 0;
 			
 			EntityTransaction trx = this.getTransaction();
 			
 			try {
 				trx.begin();
-				Motorista motoristaEncontrado = this.getMotoristaDao().findById(motorista.getId_motorista());
-				this.getMotoristaDao().remove(motoristaEncontrado);
+				Veiculo veiculoEncontrado = this.getVeiculoDao().findById(veiculo.getId_veiculo());
+				this.getVeiculoDao().remove(veiculoEncontrado);
 				trx.commit();
 				toReturn = VariaveisProjeto.EXCLUSAO_REALIZADA;
 				
@@ -98,25 +98,21 @@ public class MotoristaService extends ConexaoBancoService {
 			return toReturn;
 		}
 		
-		public Motorista findById(Integer id) {
-			return this.getMotoristaDao().findById(id);
+		public Veiculo findById(Integer id) {
+			return this.getVeiculoDao().findById(id);
 			
 		}
 		
-		public List<Motorista> findByEmail(String email) {
-			return this.getMotoristaDao().findEmail(Motorista.class, email);
+		public List<Veiculo> findByEmail(String placa) {
+			return this.getVeiculoDao().findPlaca(Veiculo.class, placa);
 		}
 		
-		public List<Motorista> findByCpf(Integer cpf){
-			return this.getMotoristaDao().findCpf(Motorista.class, cpf);
+		public List<Veiculo> findAll(){
+			return this.getVeiculoDao().findAll(Veiculo.class);
 		}
 		
-		public List<Motorista> findAll(){
-			return this.getMotoristaDao().findAll(Motorista.class);
-		}
-		
-		public Integer validarDigitacao(Motorista motorista) {
-			if(VariaveisProjeto.digitacaoCampo(motorista.getNome_motorista())) {
+		public Integer validarDigitacao(Veiculo veiculo) {
+			if(VariaveisProjeto.digitacaoCampo(veiculo.getPlaca())) {
 				return VariaveisProjeto.CAMPO_VAZIO;
 			}
 			else {
@@ -125,19 +121,19 @@ public class MotoristaService extends ConexaoBancoService {
 		}
 		
 		public Integer countTotalRegister() {
-			return motoristaDao.countTotalRegister(Motorista.class);
+			return veiculoDao.countTotalRegister(Veiculo.class);
 		}
 			
-		public List<Motorista> listMotoristaPaginacao(Integer numeroPagina, Integer defaultPagina) {
-			return motoristaDao.listMotoristaPaginacao(numeroPagina, defaultPagina);
+		public List<Veiculo> listVeiculoPaginacao(Integer numeroPagina, Integer defaultPagina) {
+			return veiculoDao.listVeiculoPaginacao(numeroPagina, defaultPagina);
 		}
 
-		public MotoristaDao getMotoristaDao() {
-			return motoristaDao;
+		public VeiculoDao getVeiculoDao() {
+			return veiculoDao;
 		}
 
-		public void setMotoristaDao(MotoristaDao motoristaDao) {
-			this.motoristaDao = motoristaDao;
+		public void setVeiculoDao(VeiculoDao veiculoDao) {
+			this.veiculoDao = veiculoDao;
 		}
 		
 }

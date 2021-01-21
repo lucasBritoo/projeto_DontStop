@@ -61,11 +61,24 @@ public abstract class GenericDao<T, ID extends Serializable>{
 		 return resultados;
 	 }
 	 
-	 public List<T> findCpf(Class<T> classe, long cpf){
+	 
+	 public List<T> findPlaca(Class<T> classe, String placa){
+		 
+		 List<T> resultados = new ArrayList<>();
+
+		 Query query = this.getEntityManager().createQuery("SELECT x FROM "+classe.getSimpleName()+" x WHERE x.placa LIKE :nome");
+		 query.setParameter("nome", placa);
+		 
+		 resultados = query.getResultList();
+		 
+		 return resultados;
+	 }
+	 
+	 public List<T> findCpf(Class<T> classe, Integer cpf){
 		 
 		 List<T> resultados = new ArrayList<>();
 		 
-		 Query query = this.getEntityManager().createQuery("SELECT x FROM "+classe.getSimpleName()+" x Where x.cpf_"+classe.getSimpleName()+" LIKE :cpf");
+		 Query query = this.getEntityManager().createQuery("SELECT x FROM "+classe.getSimpleName()+" x Where x.cpf_"+classe.getSimpleName()+" LIKE :cpf ");
 		 query.setParameter("cpf", cpf);
 		 
 		 resultados = query.getResultList();

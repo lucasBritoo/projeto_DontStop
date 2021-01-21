@@ -48,7 +48,7 @@ public class PorteiroTeste {
 		}
 	}
 	
-	@Test(expected = Exception.class)
+	/*@Test(expected = Exception.class)
 	public void alterarPorteiroTeste() {
 		Porteiro porteiro = new Porteiro();
 		
@@ -64,5 +64,5 @@ public class PorteiroTeste {
 		}
 		
 		
-	}
+	}*/
 }

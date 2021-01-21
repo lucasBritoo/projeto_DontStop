@@ -13,6 +13,7 @@ import com.projeto.model.service.CondominioService;
 import com.projeto.model.service.PorteiroService;
 import com.projeto.view.condominio.CadastroCondominio;
 import com.projeto.view.menu.MenuCondominio;
+import com.projeto.view.menu.MenuPorteiro;
 import com.projeto.view.trocaSenha.TelaEsqueceuSenha;
 
 import javax.swing.GroupLayout;
@@ -160,9 +161,6 @@ public class Login extends JFrame {
 				.addGroup(gl_contentPane.createSequentialGroup()
 					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
 						.addGroup(gl_contentPane.createSequentialGroup()
-							.addGap(66)
-							.addComponent(lblNewLabel_1, GroupLayout.PREFERRED_SIZE, 417, GroupLayout.PREFERRED_SIZE))
-						.addGroup(gl_contentPane.createSequentialGroup()
 							.addGap(20)
 							.addComponent(lblNewLabel)
 							.addGap(4)
@@ -184,12 +182,17 @@ public class Login extends JFrame {
 												.addComponent(passwordSenha, GroupLayout.PREFERRED_SIZE, 304, GroupLayout.PREFERRED_SIZE)))))
 								.addComponent(lblInvalido, GroupLayout.PREFERRED_SIZE, 296, GroupLayout.PREFERRED_SIZE)))
 						.addGroup(gl_contentPane.createSequentialGroup()
-							.addGap(235)
-							.addComponent(lblNewLabel_2, GroupLayout.PREFERRED_SIZE, 420, GroupLayout.PREFERRED_SIZE))
-						.addGroup(gl_contentPane.createSequentialGroup()
 							.addGap(259)
 							.addComponent(lblNewLabel_6, GroupLayout.PREFERRED_SIZE, 241, GroupLayout.PREFERRED_SIZE)))
 					.addGap(130))
+				.addGroup(Alignment.LEADING, gl_contentPane.createSequentialGroup()
+					.addGap(208)
+					.addComponent(lblNewLabel_1, GroupLayout.PREFERRED_SIZE, 417, GroupLayout.PREFERRED_SIZE)
+					.addContainerGap(268, Short.MAX_VALUE))
+				.addGroup(Alignment.LEADING, gl_contentPane.createSequentialGroup()
+					.addGap(186)
+					.addComponent(lblNewLabel_2, GroupLayout.PREFERRED_SIZE, 420, GroupLayout.PREFERRED_SIZE)
+					.addContainerGap(287, Short.MAX_VALUE))
 		);
 		gl_contentPane.setVerticalGroup(
 			gl_contentPane.createParallelGroup(Alignment.LEADING)
@@ -288,8 +291,10 @@ public class Login extends JFrame {
 
 	}
 	
-	private void acessoMenuPorteiro(Porteiro porteiro) {
-		
+	private void acessoMenuPorteiro(Porteiro porteiro) {		MenuPorteiro menuPorteiro = new MenuPorteiro(frame, porteiro);
+		menuPorteiro.setResizable(false);
+		menuPorteiro.setExtendedState(JFrame.MAXIMIZED_BOTH);
+		menuPorteiro.setVisible(true);
 	}
 	
 	private void esqueceuSenha() {
@@ -300,7 +305,7 @@ public class Login extends JFrame {
 	}
 	
 	private void novoCadastro() {
-		CadastroCondominio cadastroCondominio = new CadastroCondominio(frame);
+		CadastroCondominio cadastroCondominio = new CadastroCondominio(frame, 1);
 		cadastroCondominio.setVisible(true);
 		limpaCampos();
 		this.setVisible(false);

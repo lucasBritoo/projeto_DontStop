@@ -1,4 +1,4 @@
-package com.projeto.view.porteiro;
+package com.projeto.view.veiculo;
 
 import java.awt.EventQueue;
 
@@ -11,9 +11,12 @@ import javax.swing.border.SoftBevelBorder;
 import javax.swing.table.TableRowSorter;
 
 import com.projeto.model.models.Condominio;
+import com.projeto.model.models.Motorista;
+import com.projeto.model.models.Veiculo;
 import com.projeto.model.models.Porteiro;
-import com.projeto.model.service.PorteiroService;
+import com.projeto.model.service.VeiculoService;
 import com.projeto.view.motorista.TabelaMotorista;
+import com.projeto.view.porteiro.RelPorteiro;
 
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
@@ -38,7 +41,7 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.Color;
 
-public class TabelaPorteiro extends JInternalFrame {
+public class TabelaVeiculo extends JInternalFrame {
 
 	/**
 	 * 
@@ -66,25 +69,24 @@ public class TabelaPorteiro extends JInternalFrame {
 	private JPanel panel;
 	private JPanel panel_1;
 	
-	private static final int id_porteiro= 0;
-	private static final int nome_Porteiro = 1;
-	private static final int cpf_Porteiro= 2;
-	private static final int rg_Porteiro= 3 ;
-	private static final int email= 4;
-	private static final int telefone= 5;
+	private static final int id_veiculo= 0;
+	private static final int placa = 1;
+	private static final int marca= 2;
+	private static final int modelo= 3 ;
+	private static final int nome_motorista= 4;
 
-	private Condominio condominio;
-	private TabelaPorteiroModel tabelaPorteiroModel;
-	private TableRowSorter<TabelaPorteiroModel> sortTabelaPorteiro;
+	private Motorista motorista;
+	
+	private TabelaVeiculoModel tabelaVeiculoModel;
+	private TableRowSorter<TabelaVeiculoModel> sortTabelaVeiculo;
 	
 	
 	private Integer totalData= 0;
 	private Integer defaultPagina= 5;
 	private Integer totalPagina= 1;
 	private Integer numeroPagina= 1;
-	private JTable tabelaPorteiro;
+	private JTable tabelaVeiculo;
 	private JButton btnRelatorio;
-	
 	private int acao=0;
 	/**
 	 * Launch the application.
@@ -93,7 +95,7 @@ public class TabelaPorteiro extends JInternalFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					TabelaPorteiro frame = new TabelaPorteiro();
+					TabelaVeiculo frame = new TabelaVeiculo();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -103,9 +105,8 @@ public class TabelaPorteiro extends JInternalFrame {
 	}
 	 * Create the frame.
 	 */
-	public TabelaPorteiro(Condominio condominio, int acao) {
+	public TabelaVeiculo(int acao) {
 		this.acao = acao;
-		this.condominio = condominio;
 		initComponents();
 		iniciaPaginacao();
 		
@@ -114,7 +115,7 @@ public class TabelaPorteiro extends JInternalFrame {
 		}
 	}
 	private void initComponents() {
-		setTitle("TABELA PORTEIRO");
+		setTitle("TABELA VEICULO");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 690, 390);
 		setResizable(false);
@@ -135,7 +136,7 @@ public class TabelaPorteiro extends JInternalFrame {
 			public void keyReleased(KeyEvent e) {
 				String filtro = txtPesquisar.getText();
 				
-				filtraNomePorteiro(filtro);
+				filtraNomeVeiculo(filtro);
 			}
 		});
 		txtPesquisar.setToolTipText("Digite um CPF");
@@ -240,7 +241,7 @@ public class TabelaPorteiro extends JInternalFrame {
 		btnInserir.setIcon(new ImageIcon(TabelaMotorista.class.getResource("/com/projeto/estrutura/imagens/book_add.png")));
 		btnInserir.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				incluirPorteiro();
+				incluirVeiculo();
 				iniciaPaginacao();
 			}
 		});
@@ -250,7 +251,7 @@ public class TabelaPorteiro extends JInternalFrame {
 		btnAlterar.setIcon(new ImageIcon(TabelaMotorista.class.getResource("/com/projeto/estrutura/imagens/book_edit.png")));
 		btnAlterar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				alterarPorteiro();
+				alterarVeiculo();
 				iniciaPaginacao();
 			}
 		});
@@ -260,7 +261,7 @@ public class TabelaPorteiro extends JInternalFrame {
 		btnExcluir.setIcon(new ImageIcon(TabelaMotorista.class.getResource("/com/projeto/estrutura/imagens/book_delete.png")));
 		btnExcluir.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				excluirPorteiro();
+				excluirVeiculo();
 				iniciaPaginacao();
 			}
 		});
@@ -372,21 +373,21 @@ public class TabelaPorteiro extends JInternalFrame {
 		);
 		panel.setLayout(gl_panel);
 		
-		tabelaPorteiro = new JTable();
-		scrollPane.setViewportView(tabelaPorteiro);
+		tabelaVeiculo = new JTable();
+		scrollPane.setViewportView(tabelaVeiculo);
 		contentPane.setLayout(gl_contentPane);
 	}
 	
-	private void imprimeRelatorio() {
-		RelPorteiro relPorteiro = new RelPorteiro(new JFrame(), true);
-		relPorteiro.setLocationRelativeTo(null);
+	/*private void imprimeRelatorio() {
+		RelVeiculo relVeiculo = new RelVeiculo(new JFrame(), true);
+		relVeiculo.setLocationRelativeTo(null);
 		setVisible(false);
-		relPorteiro.setVisible(true);
+		relVeiculo.setVisible(true);
 		
-	}
+	}*/
 	
 	protected void iniciaPaginacao() {
-		totalData = buscaTotalRegistroPorteiro();
+		totalData = buscaTotalRegistroVeiculo();
 		
 		defaultPagina = Integer.valueOf(comboBox.getSelectedItem().toString());
 		
@@ -416,31 +417,31 @@ public class TabelaPorteiro extends JInternalFrame {
 			numeroPagina = 1;
 		}
 		
-		tabelaPorteiroModel = new TabelaPorteiroModel();
+		tabelaVeiculoModel = new TabelaVeiculoModel();
 		
-		tabelaPorteiroModel.setListaPorteiro(carregaListaPorteiro(numeroPagina, defaultPagina));
+		tabelaVeiculoModel.setListaVeiculo(carregaListaVeiculo(numeroPagina, defaultPagina));
 		
-		tabelaPorteiro.setModel(tabelaPorteiroModel);
+		tabelaVeiculo.setModel(tabelaVeiculoModel);
 		
-		tabelaPorteiro.setFillsViewportHeight(true);
+		tabelaVeiculo.setFillsViewportHeight(true);
 		
-		tabelaPorteiro.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		tabelaVeiculo.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		
-		tabelaPorteiroModel.fireTableDataChanged();
+		tabelaVeiculoModel.fireTableDataChanged();
 		
-		sortTabelaPorteiro = new TableRowSorter<TabelaPorteiroModel>(tabelaPorteiroModel);
+		sortTabelaVeiculo = new TableRowSorter<TabelaVeiculoModel>(tabelaVeiculoModel);
 		
-		tabelaPorteiro.setRowSorter(sortTabelaPorteiro);
+		tabelaVeiculo.setRowSorter(sortTabelaVeiculo);
 		
-		tabelaPorteiro.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+		tabelaVeiculo.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
 		
 		
-		tabelaPorteiro.getColumnModel().getColumn(id_porteiro).setWidth(11);
-		tabelaPorteiro.getColumnModel().getColumn(nome_Porteiro).setWidth(100);
-		tabelaPorteiro.getColumnModel().getColumn(cpf_Porteiro).setWidth(100);
-		tabelaPorteiro.getColumnModel().getColumn(rg_Porteiro).setWidth(100);
-		tabelaPorteiro.getColumnModel().getColumn(email).setWidth(100);
-		tabelaPorteiro.getColumnModel().getColumn(telefone).setWidth(100);
+		tabelaVeiculo.getColumnModel().getColumn(id_veiculo).setWidth(11);
+		tabelaVeiculo.getColumnModel().getColumn(placa).setWidth(50);
+		tabelaVeiculo.getColumnModel().getColumn(marca).setWidth(50);
+		tabelaVeiculo.getColumnModel().getColumn(modelo).setWidth(50);
+		tabelaVeiculo.getColumnModel().getColumn(nome_motorista).setWidth(50);
+		
 		
 		lblPaginaAtual.setText(String.valueOf(numeroPagina));
 		lblUltimaPagina.setText(String.valueOf(totalData));
@@ -448,72 +449,73 @@ public class TabelaPorteiro extends JInternalFrame {
 	}
 	
 	
-	private void alterarPorteiro() {
-		if(tabelaPorteiro.getSelectedRow() != -1 && tabelaPorteiro.getSelectedRow() < tabelaPorteiroModel.getRowCount()) {
-			int linha = tabelaPorteiro.getSelectedRow();
+	private void alterarVeiculo() {
+		if(tabelaVeiculo.getSelectedRow() != -1 && tabelaVeiculo.getSelectedRow() < tabelaVeiculoModel.getRowCount()) {
+			int linha = tabelaVeiculo.getSelectedRow();
 			
-			CadastroPorteiro porteiro = new CadastroPorteiro(new JFrame(), true, tabelaPorteiro, tabelaPorteiroModel, linha, 2, this.condominio);
-			porteiro.setLocationRelativeTo(null);
-			porteiro.setResizable(false);
-			porteiro.setVisible(true);
+			CadastroVeiculo veiculo = new CadastroVeiculo(new JFrame(), true, tabelaVeiculo, tabelaVeiculoModel, linha, 2);
+			veiculo.setLocationRelativeTo(null);
+			veiculo.setResizable(false);
+			veiculo.setVisible(true);
 			
 			
 		}
 		
 	}
 
-	private void incluirPorteiro() {
-		CadastroPorteiro porteiro = new CadastroPorteiro(new JFrame(), true, tabelaPorteiro, tabelaPorteiroModel, 0, 1, this.condominio);
-		porteiro.setLocationRelativeTo(null);
-		porteiro.setResizable(false);
-		porteiro.setVisible(true);
+	private void incluirVeiculo() {
+		CadastroVeiculo veiculo = new CadastroVeiculo(new JFrame(), true, tabelaVeiculo, tabelaVeiculoModel, 0, 1);
+		veiculo.setLocationRelativeTo(null);
+		veiculo.setResizable(false);
+		veiculo.setVisible(true);
 		
 	}
 	
-	private void excluirPorteiro() {
-		if(tabelaPorteiro.getSelectedRow() != -1 && tabelaPorteiro.getSelectedRow() < tabelaPorteiroModel.getRowCount()) {
-			int linha = tabelaPorteiro.getSelectedRow();
+	private void excluirVeiculo() {
+		if(tabelaVeiculo.getSelectedRow() != -1 && tabelaVeiculo.getSelectedRow() < tabelaVeiculoModel.getRowCount()) {
+			int linha = tabelaVeiculo.getSelectedRow();
 			
-			CadastroPorteiro porteiro = new CadastroPorteiro(new JFrame(), true, tabelaPorteiro, tabelaPorteiroModel, linha, 3, this.condominio);
-			porteiro.setLocationRelativeTo(null);
-			porteiro.setResizable(false);
-			porteiro.setVisible(true);
+			CadastroVeiculo veiculo = new CadastroVeiculo(new JFrame(), true, tabelaVeiculo, tabelaVeiculoModel, linha, 3);
+			veiculo.setLocationRelativeTo(null);
+			veiculo.setResizable(false);
+			veiculo.setVisible(true);
+			
 			
 		}
 	}
 	
-	private List<Porteiro> carregaListaPorteiro(Integer numeroPagina, Integer defaultPagina) {
+	private List<Veiculo> carregaListaVeiculo(Integer numeroPagina, Integer defaultPagina) {
 		
-		PorteiroService porteiroService = new PorteiroService();
-		List<Porteiro> listaPorteiro = new ArrayList<Porteiro>();
+		VeiculoService veiculoService = new VeiculoService();
+		List<Veiculo> listaVeiculo = new ArrayList<Veiculo>();
 		
-		listaPorteiro = porteiroService.listPorteiroPaginacao((defaultPagina * (numeroPagina - 1)), defaultPagina);
-		return listaPorteiro;
+		listaVeiculo = veiculoService.listVeiculoPaginacao((defaultPagina * (numeroPagina - 1)), defaultPagina);
+		return listaVeiculo;
 	}
 	
-	private Integer buscaTotalRegistroPorteiro() {
+	private Integer buscaTotalRegistroVeiculo() {
 		
 		Integer totalRegistro = 0;
 		
-		PorteiroService porteiroService = new PorteiroService();
-		totalRegistro = porteiroService.countTotalRegister();
+		VeiculoService veiculoService = new VeiculoService();
+		totalRegistro = veiculoService.countTotalRegister();
 		
 		return totalRegistro;
 	}
 	
 	public JTable getTable() {
-		return tabelaPorteiro;
+		return tabelaVeiculo;
 	}
 	
-	private void filtraNomePorteiro(String filtro) {
-		RowFilter<TabelaPorteiroModel, Object> rowFilter = null;
+	private void filtraNomeVeiculo(String filtro) {
+		RowFilter<TabelaVeiculoModel, Object> rowFilter = null;
 		
 		try {
 			rowFilter = RowFilter.regexFilter(filtro);
 		}catch(PatternSyntaxException e) {
 			return;
 		}
-		sortTabelaPorteiro.setRowFilter(rowFilter);
+		sortTabelaVeiculo.setRowFilter(rowFilter);
 		
 	}
 	

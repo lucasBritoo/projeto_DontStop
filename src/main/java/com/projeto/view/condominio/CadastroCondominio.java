@@ -69,6 +69,7 @@ public class CadastroCondominio extends JFrame {
 	
 	
 	private Login login;
+	private int chamada = 0;
 	
 	
 	/**
@@ -88,8 +89,9 @@ public class CadastroCondominio extends JFrame {
 	}
 	 */
 	
-	public CadastroCondominio(Login login) {
+	public CadastroCondominio(Login login, int chamada) {
 		this.login = login;
+		this.chamada = chamada;
 		initiComponents();
 		lblSenhaErrada.setVisible(false);
 		lblSenha8Caracteres.setVisible(false);
@@ -301,8 +303,13 @@ public class CadastroCondominio extends JFrame {
 		btnVoltar = new JButton("VOLTAR");
 		btnVoltar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				login.setVisible(true);
-				dispose();
+				if(chamada == 1) {
+					login.setVisible(true);
+					dispose();
+				}
+				if(chamada == 2) {
+					dispose();
+				}
 			}
 		});
 		btnVoltar.setIcon(new ImageIcon(CadastroCondominio.class.getResource("/com/projeto/estrutura/imagens/arrow_undo.png")));
@@ -694,6 +701,21 @@ public class CadastroCondominio extends JFrame {
 		}
 		return condominio;
 
+	}
+	
+	public void exibirCondominio(Condominio condominio) {
+		txtNomeCondominio.setText(condominio.getNome_condominio());
+		txtEmail.setText(condominio.getEmail());
+		passwordSenha.setText(condominio.getSenha());
+		passwordConfirmaSenha.setText(condominio.getSenha());
+		txtTelefone.setText(condominio.getTelefone());
+		txtRua.setText(condominio.getLogradouro());
+		txtBairro.setText(condominio.getBairro());
+		txtNumero.setText(String.valueOf(condominio.getN_instituicao()));
+		txtCEP.setText(condominio.getCep());
+		comBoxEstado.setActionCommand(condominio.getEstado());
+		txtCidade.setText(condominio.getCidade());
+		txtComplemento.setText(condominio.getComplemento());
 	}
 
 	private boolean verificaCampos() {

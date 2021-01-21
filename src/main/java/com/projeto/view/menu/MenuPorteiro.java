@@ -25,6 +25,7 @@ import com.projeto.view.trocaSenha.EsqueceuSenhaLogado;
 import com.projeto.view.veiculo.CadastroVeiculo;
 import com.projeto.view.veiculo.ExibirVeiculo;
 import com.projeto.view.veiculo.TabelaVeiculo;
+import com.projeto.view.visitante.Visitante;
 
 import javax.swing.JMenuBar;
 import javax.swing.JMenu;
@@ -51,30 +52,22 @@ import java.awt.SystemColor;
 import javax.swing.JLabel;
 import java.awt.Font;
 
-public class MenuCondominio extends JFrame {
+public class MenuPorteiro extends JFrame {
 
 	private static final long serialVersionUID = 5660163520018698714L;
 	private JLayeredPane contentPane;
 	private JMenuBar menuBar;
 	private JMenu menuArquivo;
-	private JMenuItem menuCondominio;
 	private JMenuItem menuLogout;
-	private JMenuItem menuPorteiro;
 	private JMenu menuSair;
 	private JMenuItem menuSairSistema;
-	private JMenuItem menuMotorista;
-	private JMenuItem menuVeiculo;
-	private JMenu menuHistorico;
-	private JMenuItem menuHistoricoAcesso;
-	private JMenuItem menuHistoricoSaida;
-	private JMenuItem menuHistoricoCompleto;
 	
 	private Condominio condominio;
 	private Motorista motorista;
 	private ExibirVeiculo telaVeiculo = new ExibirVeiculo();
 	private ExibirMotorista telaMotorista = new ExibirMotorista();
 	
-	//private Porteiro porteiro;
+	private Porteiro porteiro;
 	
 	
 	private Login login;
@@ -89,28 +82,13 @@ public class MenuCondominio extends JFrame {
 	private JButton btnNewButton_4;
 	private JPanel panel;
 	private JLabel lblNewLabel_3;
-	/**
-	 * Launch the application.
-	
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					MenuCondominio frame = new MenuCondominio();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-	 */
+	private JMenuItem alterSenha;
 	
 	
-	public MenuCondominio(Login login, Condominio condominio) {
+	public MenuPorteiro(Login login, Porteiro porteiro) {
 		setBackground(new Color(175, 238, 238));
 		this.login =login;
-		this.condominio = condominio;
+		this.porteiro = porteiro;
 		initComponents();
 		chamarTela();
 		//iniciarTabelas();
@@ -128,35 +106,6 @@ public class MenuCondominio extends JFrame {
 		menuArquivo = new JMenu("Arquivo");
 		menuBar.add(menuArquivo);
 		
-		menuCondominio = new JMenuItem("Condominio");
-		menuArquivo.add(menuCondominio);
-		
-		menuPorteiro = new JMenuItem("Porteiro");
-		menuPorteiro.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				tabelaPorteiro();
-				
-				
-			}
-		});
-		menuArquivo.add(menuPorteiro);
-		
-		menuMotorista = new JMenuItem("Motorista");
-		menuMotorista.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				tabelaMotorista();
-			}
-		});
-		menuArquivo.add(menuMotorista);
-		
-		menuVeiculo = new JMenuItem("Ve\u00EDculo");
-		menuVeiculo.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				tabelaVeiculo();
-			}
-		});
-		menuArquivo.add(menuVeiculo);
-		
 		menuLogout = new JMenuItem("Logout");
 		menuLogout.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -164,24 +113,16 @@ public class MenuCondominio extends JFrame {
 				login.setVisible(true);
 			}
 		});
-		menuArquivo.add(menuLogout);
 		
-		menuHistorico = new JMenu("Historico");
-		menuBar.add(menuHistorico);
-		
-		menuHistoricoCompleto = new JMenuItem("Hist\u00F3rico Completo");
-		menuHistoricoCompleto.addActionListener(new ActionListener() {
+		alterSenha = new JMenuItem("Alterar Senha");
+		alterSenha.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				iniciarHistorico();
+				EsqueceuSenhaLogado esqueceuSenhaLogado = new EsqueceuSenhaLogado();
+				esqueceuSenhaLogado.setVisible(true);
 			}
 		});
-		menuHistorico.add(menuHistoricoCompleto);
-		
-		menuHistoricoAcesso = new JMenuItem("Hist\u00F3rico de Acesso");
-		menuHistorico.add(menuHistoricoAcesso);
-		
-		menuHistoricoSaida = new JMenuItem("Hist\u00F3rico de Entrada");
-		menuHistorico.add(menuHistoricoSaida);
+		menuArquivo.add(alterSenha);
+		menuArquivo.add(menuLogout);
 		
 		menuSair = new JMenu("Sair");
 		menuBar.add(menuSair);
@@ -236,7 +177,7 @@ public class MenuCondominio extends JFrame {
 				tabelaMotorista();
 			}
 		});
-		btnNewButton_2.setIcon(new ImageIcon(MenuCondominio.class.getResource("/com/projeto/estrutura/imagens/application_form_add.png")));
+		btnNewButton_2.setIcon(new ImageIcon(MenuPorteiro.class.getResource("/com/projeto/estrutura/imagens/application_form_add.png")));
 		
 		btnNewButton_3 = new JButton("VE\u00CDCULO");
 		btnNewButton_3.addActionListener(new ActionListener() {
@@ -244,38 +185,36 @@ public class MenuCondominio extends JFrame {
 				tabelaVeiculo();
 			}
 		});
-		btnNewButton_3.setIcon(new ImageIcon(MenuCondominio.class.getResource("/com/projeto/estrutura/imagens/application_form_add.png")));
+		btnNewButton_3.setIcon(new ImageIcon(MenuPorteiro.class.getResource("/com/projeto/estrutura/imagens/application_form_add.png")));
 		
-		btnNewButton_4 = new JButton("PORTEIRO");
+		btnNewButton_4 = new JButton("VISITANTE");
 		btnNewButton_4.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				tabelaPorteiro();
+				cadastrarVisitante();
 			}
 		});
-		btnNewButton_4.setIcon(new ImageIcon(MenuCondominio.class.getResource("/com/projeto/estrutura/imagens/application_form_add.png")));
+		btnNewButton_4.setIcon(new ImageIcon(MenuPorteiro.class.getResource("/com/projeto/estrutura/imagens/application_form_add.png")));
 		
-		lblNewLabel = new JLabel("INFORMA\u00C7\u00D5ES DO CONDOM\u00CDNIO");
+		lblNewLabel = new JLabel("INSTRU\u00C7\u00D5ES PARA O PORT\u00C3O");
 		lblNewLabel.setFont(new Font("Tahoma", Font.BOLD, 16));
 		
 		lblNewLabel_1 = new JLabel("________________________________________________________________________________________");
 		lblNewLabel_1.setForeground(Color.BLACK);
 		
-		btnNewButton = new JButton("EDITAR CADASTRO");
+		btnNewButton = new JButton("ABRIR PORT\u00C3O");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				editarCadastro();
 			}
 		});
-		btnNewButton.setIcon(new ImageIcon(MenuCondominio.class.getResource("/com/projeto/estrutura/imagens/application_edit.png")));
+		btnNewButton.setIcon(new ImageIcon(MenuPorteiro.class.getResource("/com/projeto/estrutura/imagens/application_home.png")));
 		
-		btnNewButton_1 = new JButton("ALTERAR SENHA");
+		btnNewButton_1 = new JButton("FECHAR PORT\u00C3O");
 		btnNewButton_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				EsqueceuSenhaLogado esqueceuSenhaLogado = new EsqueceuSenhaLogado();
-				esqueceuSenhaLogado.setVisible(true);
+				
 			}
 		});
-		btnNewButton_1.setIcon(new ImageIcon(MenuCondominio.class.getResource("/com/projeto/estrutura/imagens/application_form_edit.png")));
+		btnNewButton_1.setIcon(new ImageIcon(MenuPorteiro.class.getResource("/com/projeto/estrutura/imagens/application_home.png")));
 		GroupLayout gl_panel = new GroupLayout(panel);
 		gl_panel.setHorizontalGroup(
 			gl_panel.createParallelGroup(Alignment.LEADING)
@@ -328,19 +267,14 @@ public class MenuCondominio extends JFrame {
 		contentPane.setLayout(gl_contentPane);
 	}
 	
-	private void tabelaPorteiro() {
-		
-		TabelaPorteiro tabelaPorteiro = new TabelaPorteiro(condominio, 1);
-		centralizaForm(tabelaPorteiro);
-		contentPane.add(tabelaPorteiro);
-		tabelaPorteiro.setResizable(false);
-		
-		tabelaPorteiro.setVisible(true);
+	private void cadastrarVisitante() {
+		Visitante visitante = new Visitante();
+		visitante.setVisible(true);
 	}
 
 	private void tabelaMotorista() {
 		
-		TabelaMotorista tabelaMotorista = new TabelaMotorista(condominio,1);
+		TabelaMotorista tabelaMotorista = new TabelaMotorista(condominio, 2);
 		centralizaForm(tabelaMotorista);
 		contentPane.add(tabelaMotorista);
 		tabelaMotorista.setResizable(false);
@@ -351,7 +285,7 @@ public class MenuCondominio extends JFrame {
 	
 	private void tabelaVeiculo() {
 		
-		TabelaVeiculo tabelaVeiculo = new TabelaVeiculo(1);
+		TabelaVeiculo tabelaVeiculo = new TabelaVeiculo(2);
 		centralizaForm(tabelaVeiculo);
 		contentPane.add(tabelaVeiculo);
 		tabelaVeiculo.setResizable(false);
@@ -368,7 +302,7 @@ public class MenuCondominio extends JFrame {
 	private void iniciarTabelas() {
 		tabelaMotorista();
 		tabelaVeiculo();
-		tabelaPorteiro();
+		//tabelaPorteiro();
 	}
 	
 	private void chamarTela() {
@@ -418,15 +352,4 @@ public class MenuCondominio extends JFrame {
 		
 	}
 	
-	private void editarCadastro() {
-		CadastroCondominio cadastroCondominio = new CadastroCondominio(login, 2);
-		cadastroCondominio.exibirCondominio(condominio);
-		cadastroCondominio.setVisible(true);
-		
-	}
-	
-	protected void iniciarHistorico() {
-		Relatorios relatorios = new Relatorios();
-		relatorios.setVisible(true);
-	}
 }

@@ -102,10 +102,7 @@ public class PorteiroService extends ConexaoBancoService{
 		return this.getPorteiroDao().findEmail(Porteiro.class, email);
 	}
 	
-	public List<Porteiro> findByCpf(long cpf){
-		return this.getPorteiroDao().findCpf(Porteiro.class, cpf);
-	}
-	
+
 	public List<Porteiro> findAll(){
 		return this.getPorteiroDao().findAll(Porteiro.class);
 	}
